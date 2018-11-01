@@ -1,17 +1,18 @@
 <?php if (!defined('THINK_PATH')) exit();?><!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<title>登录--一刻钟·婚礼服务后台管理</title>
-	<meta name="renderer" content="webkit">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-	<meta name="apple-mobile-web-app-status-bar-style" content="black">
-	<meta name="apple-mobile-web-app-capable" content="yes">
-	<meta name="format-detection" content="telephone=no">
-	<link rel="stylesheet" href="/Public/admin/layui/css/layui.css" media="all" />
-	<link rel="stylesheet" href="/Public/admin/css/login.css" media="all" />
-	<link rel="icon" href="/Public/admin/images/favicon.ico">
+    <meta charset="utf-8">
+    <title>一刻钟·婚礼服务管理后台</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="/Public/admin/layui/css/layui.css" media="all" />
+    <link rel="stylesheet" href="/Public/admin/css/login.css" media="all" />
+    <link rel="icon" href="/Public/admin/images/favicon.ico">
 </head>
 <body>
 	<video class="video-player" preload="auto" autoplay="autoplay" loop="loop" data-height="1080" data-width="1920" height="1080" width="1920">
@@ -20,7 +21,7 @@
 	</video>
 	<div class="video_mask"></div>
 	<div class="login">
-	    <h1>一刻钟·婚礼服务后台管理</h1>
+	    <h1>一刻钟·婚礼服务管理后台</h1>
 	    <form class="layui-form">
 	    	<div class="layui-form-item">
 				<input class="layui-input" name="username" placeholder="用户名" lay-verify="required" type="text" autocomplete="off">
