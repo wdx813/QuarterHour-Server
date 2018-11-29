@@ -24,7 +24,7 @@ define('APP_PATH','./Application/');
 define('APP_STATUS', 'config_dev');
 
 // 定义绑定模块
-define('BIND_MODULE', 'Admin');
+//define('BIND_MODULE', 'Admin');
 
 // 引入ThinkPHP入口文件
 require './ThinkPHP/ThinkPHP.php';

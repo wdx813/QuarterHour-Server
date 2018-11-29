@@ -17,8 +17,9 @@ class BaseController extends Controller
 {
     public function __construct()
     {
-        if(!isset($_SESSION['current_admin_id'])) {
-            $this->redirect('Login/index');
+        parent::__construct();
+        if (!isset($_SESSION['current_admin_id'])) {
+            $this->redirect('admin/login/index');
         }
     }
 }

@@ -1,10 +1,13 @@
 <include file="Public/header" />
 <body>
-	<video class="video-player" preload="auto" autoplay="autoplay" loop="loop" data-height="1080" data-width="1920" height="1080" width="1920">
-	    <source src="/Public/admin/video/login.mp4" type="video/mp4">
-	    <!-- 此视频文件为支付宝所有，在此仅供样式参考，如用到商业用途，请自行更换为其他视频或图片，否则造成的任何问题使用者本人承担，谢谢 -->
-	</video>
-	<div class="video_mask"></div>
+	<!--<video class="video-player" preload="auto" autoplay="autoplay" loop="loop" data-height="1080" data-width="1920" height="1080" width="1920">-->
+	    <!--<source src="/Public/admin/video/login.mp4" type="video/mp4">-->
+	    <!--&lt;!&ndash; 此视频文件为支付宝所有，在此仅供样式参考，如用到商业用途，请自行更换为其他视频或图片，否则造成的任何问题使用者本人承担，谢谢 &ndash;&gt;-->
+	<!--</video>-->
+	<div class="background" style="width: 100%; height: 100%;">
+		<img src="/Public/home/images/background_home.jpg" style="width: 100%; height: 100%;">
+	</div>
+	<!--<div class="video_mask"></div>-->
 	<div class="login">
 	    <h1>一刻钟·婚礼服务管理后台</h1>
 	    <form class="layui-form">
@@ -16,7 +19,7 @@
 		    </div>
 		    <div class="layui-form-item form_code">
 				<input class="layui-input" name="code" placeholder="验证码" lay-verify="required" type="text" autocomplete="off">
-				<div class="code"><img id="imgCode" src="/login/verify_create" width="116" height="36"></div>
+				<div class="code"><img id="imgCode" src="/admin/login/verify_create" width="116" height="36"></div>
 		    </div>
 			<button class="layui-btn login_btn" lay-submit="" lay-filter="login">登录</button>
 		</form>
@@ -29,33 +32,33 @@
             var form = layui.form(),
                 layer = parent.layer === undefined ? layui.layer : parent.layer,
                 $ = layui.jquery;
-            //video背景
-            // $(window).resize(function(){
-            //     if($(".video-player").width() > $(window).width()){
-            //         $(".video-player").css({"height":$(window).height(),"width":"auto","left":-($(".video-player").width()-$(window).width())/2});
-            //     }else{
-            //         $(".video-player").css({"width":$(window).width(),"height":"auto","left":-($(".video-player").width()-$(window).width())/2});
-            //     }
-            // }).resize();
+            // video背景
+            $(window).resize(function(){
+                if($(".video-player").width() > $(window).width()){
+                    $(".video-player").css({"height":$(window).height(),"width":"auto"});
+                }else{
+                    $(".video-player").css({"width":$(window).width(),"height":"auto"});
+                }
+            }).resize();
 
             // 点击图片更换验证码
             $("#imgCode").click(function () {
-                $("#imgCode").attr("src", "/login/verify_create");
+                $("#imgCode").attr("src", "/admin/login/verify_create");
             });
 
             //登录按钮事件
             form.on("submit(login)",function(data){
 				$.ajax({
-                    url: "/login/login_check",
+                    url: "/admin/login/login_check",
 					type: "POST",
 					data: data.field,
 					dataType: 'JSON',
 					success: function (res) {
 						console.log('登录成功', res);
-						if(res.result_code == "error") {
+						if(res.result_code == 400) {
 						    layer.msg(res.result_msg);
 						} else {
-                            window.location.href = "/index/index";
+                            window.location.href = "/admin/index/index";
 						}
                     },
 					error: function (res) {
