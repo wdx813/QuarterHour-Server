@@ -15,10 +15,10 @@
 .showMenu.layui-layout-admin .layui-side{ left:-200px; }
 .showMenu .layui-body,.showMenu .layui-footer{ left:0; }
 .layui-layout-admin .layui-main{ margin:0; }
-.logo{ color: #fff; float: left; line-height:60px; font-size:20px; padding:0 25px; text-align: center; width:150px;}
+.logo{ color: #fff; float: left; line-height:60px; font-size:20px; padding:0 25px; text-align: center; width:250px;}
 .hideMenu{ float:left; width:20px; height:20px; margin:15px 15px 0 0; font-size:17px; text-align:center; padding:5px 5px; color:#fff; background-color:#1AA094; }
 .hideMenu:hover{ color:#fff; }
-.weather{ color:#fff; float:left; margin:15px 0 0 50px;}
+.weather{ color:#fff; float:left; margin:15px 0 0 0px;}
 .component{ float: left; width:200px; height:30px; margin-top: 15px; position: relative;}
 .component .layui-input{ height:30px; line-height: 30px; font-size:12px; border:none; transition: all 0.3s; }
 .component .layui-input:focus{ background:#fff; color:#000; }

@@ -15,11 +15,16 @@ use Think\Controller;
 
 class BaseController extends Controller
 {
+    protected $admin_info;
     public function __construct()
     {
         parent::__construct();
-        if (!isset($_SESSION['current_admin_id'])) {
+        if (!session('current_admin_id')) {
             $this->redirect('admin/login/index');
+        } else {
+            if(!$this->admin_info) {
+                $this->admin_info = M('admin')->where(array('id' => session('current_admin_id')))->find();
+            }
         }
     }
 }

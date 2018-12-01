@@ -57,7 +57,9 @@
 						console.log('登录成功', res);
 						if(res.result_code == 400) {
 						    layer.msg(res.result_msg);
-						} else {
+						    // 刷新验证码
+                            $("#imgCode").attr("src", "/admin/login/verify_create");
+                        } else {
                             window.location.href = "/admin/index/index";
 						}
                     },
