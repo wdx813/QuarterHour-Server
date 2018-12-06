@@ -243,49 +243,45 @@ a:hover,a:active,a:focus{text-decoration:none;}
 	height: 800px;
 	padding-top: 1px;
 	margin-top: 50px;
-	padding-left: 375px;
-	padding-right: 375px;
+	/*padding-left: 300px;
+	padding-right: 300px;*/
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
+
+.dingzhi-form form {
+	width: 800px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
 .dingzhi-form img{
 	margin-top: 100px;
 	margin-bottom: 74px;
 }
-.dingzhi-form span{
-	display: inline-block;
-	width: 90px;
+
+.layui-form-label {
+	width: 120px;
 	font-size: 18px;
-	text-align: right;
-	height: 38px;
-	line-height: 38px;
-	padding-right: 10px;
 }
-.dingzhi-form p{
-	margin-bottom: 20px;
+
+.layui-form-item {
+	width: 500px;
 }
+
 .dingzhi-form input{
 	width: 360px;
 	height: 38px;
 	border:1px solid #fff;
+	font-size: 14px;
 }
+
 .dingzhi-form .indexbg-btn{
-	width: 100%;
 	font-size: 16px;
 }
-.dingzhi-form .ty{
-	font-size: 14px;
-	height: 14px;
-	line-height: 14px;
-	text-align: center;
-	margin-top: 30px;
-	margin-bottom: 40px;
-}
-.dingzhi-form .ty input{
-	width: auto;
-	line-height: 14px;
-	height: 14px;
-	margin: 0;
-	margin-right: 10px;
-}
+
 .dingzhi .index-footer{
 	color: #333;
 	position: relative;

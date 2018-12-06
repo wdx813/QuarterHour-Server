@@ -1,0 +1,150 @@
+<include file="Public/header"/>
+<body>
+<div class="dingzhi">
+    <div class="dingzhi-nav">
+        <div class="container">
+            <a href="/"><img src="/Public/home/images/logo1.png" alt=""></a>
+            <div class="dingzhi-nav-r">
+                <a href=""><img src="/Public/home/images/search.png" alt=""></a>
+                <a href=""><img src="/Public/home/images/say.png" alt=""></a>
+                <a href="/">首页</a>
+            </div>
+        </div>
+    </div>
+    <div class="dingzhi-cont">
+        <div class="container">
+            <img src="/Public/home/images/img.png" alt="">
+            <img src="/Public/home/images/tit1.png" alt="">
+            <div class="dingzhi-form">
+                <img src="/Public/home/images/mf.png" alt="">
+                <form class="layui-form" action="">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">公司名称：</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="c_name" required lay-verify="required" placeholder=""
+                                   autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">联系人：</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="contacts_name" required lay-verify="required" placeholder=""
+                                   autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">联系电话：</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="contacts_mobile" required lay-verify="required" placeholder=""
+                                   autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">拍摄日期：</label>
+                        <div class="layui-input-block">
+                            <input id="shoot_date" type="text" name="shoot_date" required lay-verify="required" placeholder=""
+                                   autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">拍摄地点：</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="shoot_site" required lay-verify="required" placeholder=""
+                                   autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">婚礼风格：</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="wedding_style" required lay-verify="required" placeholder=""
+                                   autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <input type="checkbox" name="is_read" value="" title="我已阅读并同意平台服务协议" lay-filter="read" lay-skin="primary">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <button class="layui-btn layui-btn-lg layui-btn-fluid layui-btn-radius layui-btn-danger layui-btn-disabled" lay-submit lay-filter="add_custom">提交审核</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="index-footer">
+        <p>
+            <a href="">隐私政策</a>
+            <a href="">服务条款</a>
+            <a href="">联系我们</a>
+            <a style="border:none;" href="">关于我们</a>
+        </p>
+        <p>青岛云视拓智能科技有限公司 客服热线：0000-123-456</p>
+        <p>Copyright 2017-2018 inke.cn All rights reserved. 鲁ICP备123456号-1</p>
+        <p>增值业务经营许可证：鲁B2-12345678 </p>
+    </div>
+</div>
+<script type="text/javascript" src="/Public/home/layui/layui.js"></script>
+<script type="text/javascript">
+    // 获取当前日期
+    let get_current_date = function() {
+        let myDate = new Date();
+        let year = myDate.getFullYear();
+        let month = myDate.getMonth() + 1;
+        let date = myDate.getDate();
+        return year + "-" + month + "-" + date;
+    };
+
+    layui.use(['form', 'laydate', 'layer'], function () {
+        let form = layui.form,
+            laydate = layui.laydate,
+            layer = layui.layer,
+            $ = layui.jquery;
+
+        // 设置日期
+        laydate.render({
+            elem: '#shoot_date',
+            min: get_current_date()
+        });
+
+        // 根据选框修改按钮的样式
+        form.on("checkbox(read)", function (data) {
+            if(data.elem.checked) {
+                $(".layui-btn").removeClass("layui-btn-disabled");
+            } else {
+                $(".layui-btn").addClass("layui-btn-disabled");
+            }
+        });
+
+        // 提交审核
+        form.on("submit(add_custom)", function (data) {
+            if($(".layui-btn").hasClass("layui-btn-disabled")) return false;
+            let index = layer.msg('提交中，请稍候',{icon: 16,time:false,shade:0.8});
+            $.ajax({
+                url: "/home/custom/add_custom",
+                type: "POST",
+                data: data.field,
+                dataType: 'JSON',
+                success: function (res) {
+                    layer.close(index);
+                    if(res.result_code == 400) {
+                        layer.msg(res.result_msg);
+                    } else {
+                        $("input:text").val("");
+                        layer.msg("恭喜您，提交成功！", {
+                            icon: 1,
+                            time: 1500
+                        });
+                    }
+                },
+                error: function (res) {
+                    layer.close(index);
+                    layer.msg("很抱歉，提交失败~");
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>
