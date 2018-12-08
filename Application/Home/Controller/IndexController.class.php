@@ -18,10 +18,36 @@ class IndexController extends Controller
         $this->display();
     }
 
-    public function test()
+    /**
+     * 发送短信验证码
+     */
+    public function sms_send()
     {
-        $code = createUserCode();
-        dump($code);
+        $phone = I('post.phone');
+        $type  = I('post.type');
+
+        if(!$phone) {
+            $res = array(
+                'result_code' => 400,
+                'result_msg'  => '手机号不能为空'
+            );
+            $this->ajaxReturn($res);
+        }
+
+        $code = 200;
+        $msg  = '验证码发送成功';
+
+        $send_res = Sms::send($phone, $type);
+        if ($send_res == false) {
+            $code = 400;
+            $msg  = '验证码发送失败';
+        }
+
+        $res = array(
+            'result_code' => $code,
+            'result_msg'  => $msg
+        );
+        $this->ajaxReturn($res);
     }
 
     /**
@@ -104,7 +130,7 @@ class IndexController extends Controller
     public function change_pwd()
     {
         // 校验短信验证码
-        $check_res = Sms::check_captcha(I('post.phone'), I('post.captcha'), C('captcha_type.register'));
+        $check_res = Sms::check_captcha(I('post.phone'), I('post.captcha'), C('captcha_type.update_pwd'));
         if ($check_res['state'] == false) {
             $res = array(
                 'result_code' => 400,
@@ -115,23 +141,23 @@ class IndexController extends Controller
 
         $condition['phone'] = I('post.phone');
         $user = M('User')->where($condition)->find();
-        if(!$user || $user['del_state'] == 1) {
+        if (!$user || $user['del_state'] == 1) {
             $res = array(
                 'result_code' => 400,
-                'result_msg' => '该账号不存在~'
+                'result_msg'  => '该账号不存在~'
             );
         } else {
             $change_pwd_res = M('User')->where(array('id' => $user['id']))
                 ->save(array('password' => md5(I('post.newPwd')), 'update_time' => time()));
-            if($change_pwd_res == false) {
+            if ($change_pwd_res == false) {
                 $res = array(
                     'result_code' => 400,
-                    'result_msg' => '密码修改失败~'
+                    'result_msg'  => '密码修改失败~'
                 );
             } else {
                 $res = array(
                     'result_code' => 200,
-                    'result_msg' => '密码修改成功~'
+                    'result_msg'  => '密码修改成功~'
                 );
             }
         }

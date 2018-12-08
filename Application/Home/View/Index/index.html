@@ -18,10 +18,10 @@
             <img src="/Public/home/images/login-logo.png" alt="">
             <h2>手机号码注册</h2>
             <input class="layui-input" type="text" name="c_name" placeholder="请输入公司名称" lay-verify="required" autocomplete="off">
-            <input class="layui-input" type="text" name="phone" placeholder="请输入手机号" lay-verify="required|phone" autocomplete="off">
+            <input id="phone-reg" class="layui-input" type="text" name="phone" placeholder="请输入手机号" lay-verify="required|phone" autocomplete="off">
             <p class="forget">
                 <input class="layui-input" type="text" name="captcha" placeholder="请输入验证码" lay-verify="required|number|captcha" autocomplete="off">
-                <span><a href="">获取验证码</a></span>
+                <span id="btn-captcha-reg"><a>获取验证码</a></span>
             </p>
             <input class="layui-input pwd" type="password" name="password" placeholder="请输入密码" lay-verify="required|pwd" autocomplete="off">
             <input class="layui-input" type="password" name="confirm_pwd" placeholder="请再次输入密码" lay-verify="required|confirmPwd" autocomplete="off">
@@ -35,10 +35,10 @@
         <form class="layui-form" action="">
             <img src="/Public/home/images/login-logo.png" alt="">
             <h2>忘记密码</h2>
-            <input class="layui-input" type="text" name="phone" placeholder="请输入手机号" lay-verify="required|phone" autocomplete="off">
+            <input id="phone-update-pwd" class="layui-input" type="text" name="phone" placeholder="请输入手机号" lay-verify="required|phone" autocomplete="off">
             <p class="forget">
                 <input class="layui-input" type="text" name="captcha" placeholder="请输入验证码" lay-verify="required|number|captcha" autocomplete="off">
-                <span><a href="">获取验证码</a></span>
+                <span id="btn-captcha-up"><a>获取验证码</a></span>
             </p>
             <input class="layui-input pwd" type="password" name="newPwd" placeholder="请设置新密码" lay-verify="required|pwd" autocomplete="off">
             <input class="layui-input" type="password" name="confirmPwd" placeholder="请再次输入新密码" lay-verify="required|confirmPwd" autocomplete="off">
@@ -165,6 +165,77 @@
             return false;
         });
 
+        // 倒计时
+        let setTime = null,
+            obj_reg_time = $("#btn-captcha-reg a"),
+            obj_up_time = $("#btn-captcha-up a");
+
+        // 注册时获取短信验证码
+        $("#btn-captcha-reg").click(function () {
+            let phone = $("#phone-reg").val();
+            if(!phone) {
+                layer.msg('手机号不能为空');
+                return false;
+            }
+            let data = {phone: phone, type: 1};
+
+            if(obj_reg_time.text() != "获取验证码") return false;
+            let time = 59;
+            obj_reg_time.text(time + "s");
+            setTime = setInterval(function(){
+                time--;
+                if(time <= 0){
+                    obj_reg_time.text("获取验证码");
+                    clearInterval(setTime);
+                } else {
+                    obj_reg_time.text(time + "s");
+                }
+            }, 1000);
+            sms_send(data);
+        });
+
+        // 修改密码时获取短信验证码
+        $("#btn-captcha-up").click(function () {
+            let phone = $("#phone-update-pwd").val();
+            if(!phone) {
+                layer.msg('手机号不能为空');
+                return false;
+            }
+            let data = {phone: phone, type: 2};
+
+            if(obj_up_time.text() != "获取验证码") return false;
+            let time = 59;
+            obj_up_time.text(time + "s");
+            setTime = setInterval(function(){
+                time--;
+                if(time <= 0){
+                    obj_up_time.text("获取验证码");
+                    clearInterval(setTime);
+                } else {
+                    obj_up_time.text(time + "s");
+                }
+            }, 1000);
+            return;
+            sms_send(data);
+        });
+
+        let sms_send = function(data) {
+            $.ajax({
+                url: "/home/index/sms_send",
+                type: "POST",
+                dataType: "JSON",
+                data: data,
+                success: function (res) {
+                    if(res.result_code == 400) {
+                        layer.msg(res.result_msg);
+                    }
+                },
+                error: function () {
+                    layer.msg("验证码获取失败~");
+                }
+            });
+        };
+
         //添加验证规则
         form.verify({
             captcha: function(value, item){
@@ -214,6 +285,12 @@
             $(".index-reg").css({"background" : "none", "border" : "1px solid #fff"});
             // 清空表单数据
             $(".layui-input").val("");
+            // 清空倒计时
+            if(setTime != null) {
+                obj_reg_time.text("获取验证码");
+                obj_up_time.text("获取验证码");
+                clearInterval(setTime);
+            }
         });
 
         // 显示重置密码框
