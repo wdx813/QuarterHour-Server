@@ -8,7 +8,6 @@
 
 namespace Home\Controller;
 
-
 class CustomController extends BaseUserController
 {
     public function index()

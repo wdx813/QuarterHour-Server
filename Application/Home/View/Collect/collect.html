@@ -1,0 +1,228 @@
+<!-- 头部引入 -->
+<include file="Public/header_new" />
+<body>
+<div class="header" style="background-image:url(/Public/new/banner/banner{$Think.session.current_sys_theme}.jpg);">
+    <div class="container">
+        <a href="/" class="logo_box clearfix">
+            <!--<img src="/Public/new/img/logo.png" alt="" class="logo">-->
+            <div class="logo_txt">
+                <h1>{$Think.session.current_user_cname}</h1>
+                <p>{$Think.session.current_user_slogen}</p>
+                <input type="hidden" name="vip_end_time" value="{$Think.session.vip_end_time}">
+            </div>
+        </a>
+        <ul class="snav clearfix" style="color: #fff;">
+            <li><a href="#"><img src="/Public/new/img/mes.png" alt=""></a></li>
+            <li><a href="/">首页</a></li>
+            <li><a href="#" class="personal">个人中心</a></li>
+        </ul>
+    </div>
+</div>
+<div class="sub_nav">
+    <div class="container clearfix">
+        <li><a href="/home/case">风格选择</a></li>
+        <li class="on"><a href="/home/collect/list">我的作品</a></li>
+    </div>
+</div>
+<div class="case_list container">
+    <div class="title">
+        <switch name="vr_data.type">
+            <case value="1">
+                <em>喜庆典雅</em><span><img src="/Public/new/img/w2.png" alt=""></span>
+            </case>
+            <case value="2">
+                <em>欧式梦幻</em><span><img src="/Public/new/img/w3.png" alt=""></span>
+            </case>
+            <case value="3">
+                <em>唯美浪漫</em><span><img src="/Public/new/img/w4.png" alt=""></span>
+            </case>
+            <case value="4">
+                <em>森系清新</em><span><img src="/Public/new/img/w5.png" alt=""></span>
+            </case>
+            <default />
+            <em>全部</em><span><img src="/Public/new/img/w1.png" alt=""></span>
+        </switch>
+    </div>
+    <div class="case_nav clearfix">
+        <ul class="left">
+            <li {$vr_data['tag'] ? '' : 'class="on"'}><a href="/home/collect/list??tag=-1&type={$vr_data.type}">默认</a></li>
+            <li {$vr_data['tag'] == 1 ? 'class="on"' : ''}><a href="/home/collect/list?tag=1&type={$vr_data.type}">推荐</a></li>
+            <li {$vr_data['tag'] == 2 ? 'class="on"' : ''}><a href="/home/collect/list?tag=2&type={$vr_data.type}">热门</a></li>
+            <li {$vr_data['tag'] == 3 ? 'class="on"' : ''}><a href="/home/collect/list?tag=3&type={$vr_data.type}">最新</a></li>
+        </ul>
+        <ul class="right">
+            <li {$vr_data['type'] == -1 ? 'class="on"' : ''} data-color="#333" data-img="/Public/new/img/w1.png"><a href="case?type=-1&tag={$vr_data.tag}">全部</a></li>
+            <li {$vr_data['type'] == 1 ? 'class="on"' : ''} data-color="#f28479" data-img="/Public/new/img/w2.png"><a href="case?type=1&tag={$vr_data.tag}">喜庆典雅</a></li>
+            <li {$vr_data['type'] == 2 ? 'class="on"' : ''} data-color="#82c9e8" data-img="/Public/new/img/w3.png"><a href="case?type=2&tag={$vr_data.tag}">欧式梦幻</a></li>
+            <li {$vr_data['type'] == 3 ? 'class="on"' : ''} data-color="#dd90a9" data-img="/Public/new/img/w4.png"><a href="case?type=3&tag={$vr_data.tag}">唯美浪漫</a></li>
+            <li {$vr_data['type'] == 4 ? 'class="on"' : ''} data-color="#86d796" data-img="/Public/new/img/w5.png"><a href="case?type=4&tag={$vr_data.tag}">森系清新</a></li>
+        </ul>
+    </div>
+    <ul class="main_list clearfix">
+        <foreach name="vr_data.vr_list" item="vr">
+            <li class="col-md-6">
+                <switch name="vr.tag">
+                    <case value="1">
+                        <div class="img_box rec" style="background-image: url(/Public/home/thumb/{$vr.vr_thumb});">
+                            <div class="mask"></div>
+                            <div class="inner">
+                                <div class="heart {$vr['is_collect'] ? 'on' : ''}" data-vr-id="{$vr.id}"></div>
+                                <!--<div class="vr" data-toggle="modal" data-target="#myModal">进入VR婚礼</div>-->
+                                <div class="vr" onclick="open_vr(this);" data-src="{$vr.vr_src}" data-title="{$vr.title}">进入VR婚礼</div>
+                            </div>
+                        </div>
+                    </case>
+                    <case value="2">
+                        <div class="img_box pop" style="background-image: url(/Public/home/thumb/{$vr.vr_thumb});">
+                            <div class="mask"></div>
+                            <div class="inner">
+                                <div class="heart {$vr['is_collect'] ? 'on' : ''}" data-vr-id="{$vr.id}"></div>
+                                <!--<div class="vr" data-toggle="modal" data-target="#myModal">进入VR婚礼</div>-->
+                                <div class="vr" onclick="open_vr(this);" data-src="{$vr.vr_src}" data-title="{$vr.title}">进入VR婚礼</div>
+                            </div>
+                        </div>
+                    </case>
+                    <case value="3">
+                        <div class="img_box new" style="background-image: url(/Public/home/thumb/{$vr.vr_thumb});">
+                            <div class="mask"></div>
+                            <div class="inner">
+                                <div class="heart {$vr['is_collect'] ? 'on' : ''}" data-vr-id="{$vr.id}"></div>
+                                <!--<div class="vr" data-toggle="modal" data-target="#myModal">进入VR婚礼</div>-->
+                                <div class="vr" onclick="open_vr(this);" data-src="{$vr.vr_src}" data-title="{$vr.title}">进入VR婚礼</div>
+                            </div>
+                        </div>
+                    </case>
+                    <default />
+                    <div class="img_box" style="background-image: url(/Public/home/thumb/{$vr.vr_thumb});">
+                        <div class="mask"></div>
+                        <div class="inner">
+                            <div class="heart {$vr['is_collect'] ? 'on' : ''}" data-vr-id="{$vr.id}"></div>
+                            <!--<div class="vr" data-toggle="modal" data-target="#myModal">进入VR婚礼</div>-->
+                            <div class="vr" onclick="open_vr(this);" data-src="{$vr.vr_src}" data-title="{$vr.title}">进入VR婚礼</div>
+                        </div>
+                    </div>
+                </switch>
+
+                <div class="right_t">
+                    <div class="t clearfix">
+                        <span class="id">
+                            <switch name="vr.tag">
+                                <case value="3">
+                                    <em>id</em>
+                                </case>
+                                <case value="2">
+                                    <em class="yellow">id</em>
+                                </case>
+                                <case value="1">
+                                    <em class="red">id</em>
+                                </case>
+                                <default /><em>id</em>
+                            </switch>
+                            {$vr.vr_code}
+                        </span>
+                        <span class="view">{$vr.view_count}</span>
+                    </div>
+                    <a target="_blank" href="javascript:void(0);" onclick="collect_detail({$vr.vr_id})" class="m_title">{$vr.title} 丨 <span>{$vr.type_name}</span></a>
+                    <div class="price">参考报价：<span>{$vr.my_min_price}~{$vr.my_max_price}元</span></div>
+                    <div class="des">
+                        {$vr.my_description}
+                    </div>
+                    <a target="_blank" href="javascript:void(0);" onclick="collect_detail({$vr.vr_id})" class="more"><img src="/Public/new/img/more.png" alt=""></a>
+                </div>
+            </li>
+        </foreach>
+    </ul>
+    <div class="pages">
+        <!-- 上一页 -->
+        <if condition="$vr_data['page'] != 1">
+            <a href="/home/collect/list?page={$vr_data['page'] - 1}&tag={$vr_data.tag}" class="auto">上一页</a>
+        </if>
+        <!-- 页码 -->
+        <if condition="$vr_data['page_total'] gt 6">
+            <if condition="$vr_data['page'] lt 6">
+                <for start="1" end="6">
+                    <a href="/home/collect/list?page={$i}&tag={$vr_data.tag}" {$vr_data['page'] == $i ? 'class="on"' : ''}>{$i}</a>
+                </for>
+                <a>···</a>
+                <a href="/home/collect/list?page={$vr_data.page_total}&tag={$vr_data.tag}">{$vr_data.page_total}</a>
+                <else />
+                <a href="/home/collect/list?page=1&tag={$vr_data.tag}">1</a>
+                <a href="/home/collect/list?page=1&tag={$vr_data.tag}">2</a>
+                <a>···</a>
+                <for start="6" end="$vr_data['page_total'] + 1">
+                    <a href="/home/collect/list?page={$i}&tag={$vr_data.tag}" {$vr_data['page'] == $i ? 'class="on"' : ''}>{$i}</a>
+                </for>
+            </if>
+            <else />
+            <for start="1" end="$vr_data['page_total'] + 1">
+                <a href="/home/collect/list?page={$i}&tag={$vr_data.tag}" {$vr_data['page'] == $i ? 'class="on"' : ''}>{$i}</a>
+            </for>
+        </if>
+        <!-- 下一页和总页数 -->
+        <if condition="$vr_data['page'] != $vr_data['page_total']">
+            <a href="/home/collect/list?page={$vr_data['page'] + 1}&tag={$vr_data.tag}" class="auto">下一页</a>
+        </if>
+        <a class="auto">共{$vr_data.page_total}页</a>
+    </div>
+</div>
+<!-- 底部信息 -->
+<include file="Public/footer" />
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content bb">
+            <div class="modal-body"><img src="/Public/new/img/vr.png" alt=""></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">进入VR全景</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">退出全景</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="/Public/home/js/index.js"></script>
+<script>
+    $('.sub_nav li a').click(function () {
+        $(this).addClass('on').siblings('li').removeClass('on');
+        var n = $(this).index();
+        if (n == 0) {
+            $('.case_nav .right').stop(true, true).fadeIn();
+        } else {
+            $('.case_nav .right').stop(true, true).fadeOut();
+        }
+    });
+
+    // 收藏
+    $('.main_list .heart').click(function () {
+        $(this).toggleClass('on');
+        let vr_id = $(this).attr("data-vr-id");
+        $.post("/home/collect/add_or_cancel", {"vr_id" : vr_id}, function (res) {
+            console.log(res);
+        })
+    });
+
+    $('.case_nav .right li').click(function () {
+        $(this).addClass('on').siblings('li').removeClass('on');
+        var t = $(this).text(),
+            c = $(this).attr('data-color'),
+            i = $(this).attr('data-img');
+        $('.case_list .title em').text(t);
+        // $('.case_list .title em').css('color', c);
+        $('.case_list .title span img').attr('src', i);
+    });
+    $('.modal button.btn').click(function () {
+        $('.modal.in .modal-dialog').addClass('on');
+    });
+    $('.modal-open .modal,.btn-default').click(function () {
+        $('.modal.in .modal-dialog').removeClass('on');
+    });
+    $(document).keyup(function (event) {
+        switch (event.keyCode) {
+            case 27:
+                $('.modal.in .modal-dialog').removeClass('on');
+            case 96:
+                $('.modal.in .modal-dialog').removeClass('on');
+        }
+    });
+
+</script>
+</html>

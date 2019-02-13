@@ -1214,7 +1214,7 @@
             }
             window[action]('resize', s.onResize);
         
-            // Next, Prev, Index
+            // Next, Prev, Admin
             if (s.params.nextButton && s.nextButton && s.nextButton.length > 0) {
                 s.nextButton[actionDom]('click', s.onClickNext);
                 if (s.params.a11y && s.a11y) s.nextButton[actionDom]('keydown', s.a11y.onEnterKey);
@@ -1877,7 +1877,7 @@
                 if ((s.activeIndex || 0) !== slideIndex ) return false;
             }
         
-            // Update Index
+            // Update Admin
             if (typeof speed === 'undefined') speed = s.params.speed;
             s.previousIndex = s.activeIndex || 0;
             s.activeIndex = slideIndex;

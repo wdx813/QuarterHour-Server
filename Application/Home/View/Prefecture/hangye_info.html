@@ -1,0 +1,386 @@
+<!-- 头部引入 -->
+<include file="Public/header_new" />
+<body>
+  <div class="header2">
+    <div class="container">
+      <a href="#" class="left clearfix">
+          <img src="/Public/new/img/index_logo.png" alt="">
+      </a>
+      <div class="right">
+       <!--<div class="c_search">
+          <form action="">
+            <input type="text" placeholder="请输入搜索关键字">
+            <input type="submit" value="搜 索">
+          </form>
+        </div>-->
+        <a href="#"><img src="/Public/new/img/mes_b.png" alt=""></a>
+        <a href="/">首页</a>
+      </div>      
+      </div>
+  </div>
+  <div class="hy_banner">
+    <img src="/Public/new/img/banner2.jpg" alt="">
+  </div>
+  <div class="position container"><a href="/home/prefecture">全部作品</a> &gt; <a href="/home/prefecture?type={$vr_info.type_id}">{$vr_info.type_name}</a> &gt; <a href="#" class="on">作品详情</a></div>
+  <div class="hy_in container">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="img_box" style="background-image: url(/Public/home/thumb/{$vr_info.vr_thumb});"></div>
+      </div>
+      <div class="col-md-6">
+        <div class="top_t clearfix">
+          <span class="id"><em>id</em>{$vr_info.vr_code}</span>
+          <span class="store">收藏：<em class="in_heart {$vr_info['is_collect'] ? 'on' : ''}" data-vr-id="{$vr_info.id}"></em></span>
+        </div>
+          
+          <div class="title">{$vr_info.type_name} | {$vr_info.title}</div>
+          <div class="pop">人气值：
+            <for start="1" end="$vr_info['popular'] + 1">
+                <em></em>
+            </for>
+          </div>
+          <div class="price">
+            婚礼费用：<span>{$vr_info.min_price}~{$vr_info.max_price}元</span>
+          </div>
+          <div class="des">
+            {$vr_info.description}
+          </div>       
+      </div>
+    </div>
+    <div class="bottom">
+      <div class="col-md-3 left">
+          <form action="/home/prefecture/add_quote" method="post">
+            <input type="hidden" name="vr_id" value="{$vr_info.id}">
+            <input type="hidden" name="last_quote_id" value="{$last_quote_id}">
+            <input id="submit_quote" type="submit" value="上传报价清单">
+            <ul class="input_box">
+              <li>
+                <span>物料名称</span>
+                <span>数量</span>
+                <span>价格</span>
+              </li>
+              <li>
+                <span><input type="text" name="m[0][name]" id="f_name1"></span>
+                <span><input type="text" name="m[0][count]" id="f_count1"></span>
+                <span><input type="text" name="m[0][price]" id="f_price1"></span>
+                <span><input type="hidden" name="m[0][type]" value="1"></span>
+              </li>
+              <li>
+                <span><input type="text" name="m[1][name]" id="f_name2"></span>
+                <span><input type="text" name="m[1][count]" id="f_count2"></span>
+                <span><input type="text" name="m[1][price]" id="f_price2"></span>
+                <span><input type="hidden" name="m[1][type]" value="1"></span>
+              </li>
+              <li>
+                <span><input type="text" name="m[2][name]" id="f_name3"></span>
+                <span><input type="text" name="m[2][count]" id="f_count3"></span>
+                <span><input type="text" name="m[2][price]" id="f_price3"></span>
+                <span><input type="hidden" name="m[2][type]" value="1"></span>
+              </li>
+              <div class="add_btn" id="add_btn1"></div>
+            </ul>
+            <ul class="input_box">
+              <li>
+                <span>人工项目</span>
+                <span>人数</span>
+                <span>价格</span>
+              </li>
+              <li>
+                <span><input type="text" name="p[0][name]" id="f_project1"></span>
+                <span><input type="text" name="p[0][count]" id="f_people1"></span>
+                <span><input type="text" name="p[0][price]" id="f_pricea1"></span>
+                <span><input type="hidden" name="p[0][type]" value="2"></span>
+              </li>              
+              <div class="add_btn" id="add_btn2"></div>
+            </ul>
+            <ul class="input_box">
+              <li>
+                <span>灯光型号</span>
+                <span>数量</span>
+                <span>价格</span>
+              </li>
+              <li>
+                <span><input type="text" name="l[0][name]" id="f_light1"></span>
+                <span><input type="text" name="l[0][count]" id="f_lcount1"></span>
+                <span><input type="text" name="l[0][price]" id="f_lpeice1"></span>
+                <span><input type="hidden" name="l[0][type]" value="3"></span>
+              </li>              
+              <div class="add_btn" id="add_btn3"></div>
+            </ul>
+            <ul class="input_box">
+              <li>
+                <span>运输成本</span>
+                <span>数量</span>
+                <span>价格</span>
+              </li>
+              <li>
+                <span><input type="text" name="t[0][name]" id="f_trans1"></span>
+                <span><input type="text" name="t[0][count]" id="f_tcount1"></span>
+                <span><input type="text" name="t[0][price]" id="f_tpeice1"></span>
+                <span><input type="hidden" name="t[0][type]" value="4"></span>
+              </li>              
+              <div class="add_btn" id="add_btn4"></div>
+            </ul>
+            <div class="sel_box">
+              <h5>供货地区</h5>
+              <select name="area" id="area">
+                <option value="">--请选择地区--</option>
+                <option value="北京">北京</option>
+                <option value="上海">上海</option>
+                <option value="广州">广州</option>
+                <option value="深圳">深圳</option>
+                <option value="天津">天津</option>
+                <option value="青岛">青岛</option>
+                <option value="济南">济南</option>
+                <option value="成都">成都</option>
+                <option value="杭州">杭州</option>
+                <option value="武汉">武汉</option>
+                <option value="重庆">重庆</option>
+                <option value="南京">南京</option>
+                <option value="苏州">苏州</option>
+                <option value="西安">西安</option>
+                <option value="长沙">长沙</option>
+                <option value="郑州">郑州</option>
+                <option value="大连">大连</option>
+                <option value="东莞">东莞</option>
+                <option value="宁波">宁波</option>
+                <option value="厦门">厦门</option>
+                <option value="哈尔滨">哈尔滨</option>
+                <option value="长春">长春</option>
+                <option value="石家庄">石家庄</option>
+                <option value="烟台">烟台</option>
+                <option value="合肥">合肥</option>
+                <option value="南昌">南昌</option>
+                <option value="南宁">南宁</option>
+                <option value="昆明">昆明</option>
+                <option value="温州">温州</option>
+                <option value="淄博">淄博</option>
+                <option value="佛山">佛山</option>
+                <option value="福州">福州</option>
+              </select>
+            </div>
+          </form>
+      </div>
+      <div class="col-md-9">
+        <div class="shai">
+          筛选：<select name="" id="">
+                <option value="">--请选择地区--</option>
+                <option value="北京">北京</option>
+                <option value="上海">上海</option>
+                <option value="天津">天津</option>
+                <option value="青岛">青岛</option>
+              </select>
+        </div>
+        <ul class="inin_list">
+          <foreach name="quote_list" item="quote">
+            <li>
+              <div class="company clearfix">
+                <span class="name">{$quote.provider}</span>
+                <span class="useful" data-quote-id="{$quote.id}"><em class="a">有用</em><em class="b">无用</em></span>
+              </div>
+              <div class="mid clearfix">
+                <span>报价费用：<em>{$quote.amount}元</em></span>
+                <span>地区：<em>{$quote.area}</em></span>
+                <span>联系电话：<em>{$quote.phone}</em></span>
+              </div>
+              <div class="details clearfix">
+                <foreach name="quote['Quote_detail']" item="detail">
+                  <switch name="detail['type']">
+                    <case value="1">
+                      <span><i>物料：</i>{$detail.name}   |  {$detail.count}  |  {$detail.price}元</span>
+                    </case>
+                    <case value="2">
+                      <span><i>人工：</i>{$detail.name}   |  {$detail.count}  |  {$detail.price}元</span>
+                    </case>
+                    <case value="3">
+                      <span><i>灯光：</i>{$detail.name}   |  {$detail.count}  |  {$detail.price}元</span>
+                    </case>
+                    <case value="4">
+                      <span><i>运输：</i>{$detail.name}   |  {$detail.count}  |  {$detail.price}元</span>
+                    </case>
+                  </switch>
+                </foreach>
+              </div>
+            </li>
+          </foreach>
+          <a class="more">------ 查看更多 ------</a>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- 底部信息 -->
+  <include file="Public/footer" />
+</body>
+<script>
+  $('.hy_ul .title_ span').click(function(){
+    $(this).toggleClass('on');
+  });
+  // 物料
+  $('#add_btn1').click(function(){
+    var n=$(this).parent().find('li').length;
+    let index = n - 1;
+    $(this).before('<li><span><input type="text" name="m['+index+'][name]" id="f_name'+n
+        +'"></span><span><input type="text" name="m['+index+'][count]" id="f_count'+n
+        +'"></span><span><input type="text" name="m['+index+'][price]" id="f_price'+n
+        +'"></span><span><input type="hidden" name="m['+index+'][type]" value="1"></span></li>');
+  });
+  // 人工
+  $('#add_btn2').click(function(){
+    var n=$(this).parent().find('li').length;
+    let index = n - 1;
+    $(this).before('<li><span><input type="text" name="p['+index+'][name]" id=""f_project'+n
+        +'"></span><span><input type="text" name="p['+index+'][count]" id="f_people'+n
+        +'"></span><span><input type="text" name="p['+index+'][price]" id="f_pricea'+n
+        +'"></span><span><input type="hidden" name="p['+index+'][type]" value="2"></span></li>');
+  });
+  // 灯光
+  $('#add_btn3').click(function(){
+    var n=$(this).parent().find('li').length;
+    let index = n - 1;
+    $(this).before('<li><span><input type="text" name="l['+index+'][name]" id=""f_light'+n
+        +'"></span><span><input type="text" name="l['+index+'][count]" id="f_lcount'+n
+        +'"></span><span><input type="text" name="l['+index+'][price]" id="f_lpeice'+n
+        +'"></span><span><input type="hidden" name="l['+index+'][type]" value="3"></span></li>');
+  });
+  // 运输
+  $('#add_btn4').click(function(){
+    var n=$(this).parent().find('li').length;
+    let index = n - 1;
+    $(this).before('<li><span><input type="text" name="t['+index+'][name]" id=""f_trans'+n
+        +'"></span><span><input type="text" name="t['+index+'][count]" id="f_tcount'+n
+        +'"></span><span><input type="text" name="t['+index+'][name]" id="f_tpeice'+n
+        +'"></span><span><input type="hidden" name="t['+index+'][type]" value="4"></span></li>');
+  });
+  // 收藏
+  $('.hy_in .top_t .store .in_heart').click(function(){
+    $(this).toggleClass('on');
+      let vr_id = $(this).attr("data-vr-id");
+      $.post("/home/collect/add_or_cancel", {"vr_id" : vr_id}, function (res) {
+          console.log(res);
+      })
+  });
+
+  // 有用或无用
+  $(document).on('click', '.inin_list .company .useful em', function () {
+      $(this).toggleClass('on');
+      $(this).siblings('em').removeClass('on');
+      let quote_id = $(this).parent().attr("data-quote-id");
+      let is_like = 0;
+      if($(this).hasClass("a")) {
+          is_like = 1;
+      }
+      if(!$(this).hasClass("on")) return;
+      $.post('/home/prefecture/like_or_not', {"quote_id" : quote_id, "is_like" : is_like});
+  });
+
+  // 获取更多的清单
+  $('.more').click(function () {
+      if($(this).text() == "------ 已到底啦 ------") return;
+
+      let input_last_quote_id = $("input[name='last_quote_id']"),
+          that = this;
+
+      let vr_id = $("input[name='vr_id']").val(),
+          area = $(this).val(),
+          last_quote_id = input_last_quote_id.val();
+
+      $.post('get_more_quote', {'vr_id' : vr_id, 'last_quote_id' : last_quote_id, 'area' : area}, function (res) {
+          if(res.quote_list && res.quote_list.length > 0) {
+              input_last_quote_id.val(res.last_quote_id);
+
+              let quote_list = res.quote_list;
+              for (let i = 0; i < quote_list.length; i++) {
+                  let html = build_quote_html(quote_list, i);
+                  $(that).before(html);
+              }
+          } else {
+              if(res.last_quote_id == 0) {
+                  $('.more').html("------ 暂无数据 ------");
+              } else {
+                  $('.more').html("------ 已到底啦 ------");
+              }
+          }
+      })
+  });
+
+  // 上传清单
+  $("#submit_quote").click(function () {
+      let form = $(this).parent();
+      form.ajaxSubmit(function (res) {
+          if(res) {
+              if(res.result_code == 200) {
+                  $(":input").val("");
+                  $("#area").val("");
+              }
+              layer.msg(res.result_msg);
+          } else {
+              layer.msg("服务器错误，请稍后重试~");
+          }
+      });
+      return false;
+  });
+
+  // 根据地区筛选清单
+  $(".shai select").change(function () {
+      // 清空数据
+      $('.inin_list li').remove();
+
+      let more_obj = $('.more');
+
+      let area = $(this).val(),
+          vr_id = $("input[name='vr_id']").val(),
+          input_last_quote_id = $("input[name='last_quote_id']");
+
+      $.post('get_more_quote', {'vr_id' : vr_id, 'last_quote_id' : 0, 'area' : area}, function (res) {
+          if(res.quote_list && res.quote_list.length > 0) {
+              input_last_quote_id.val(res.last_quote_id);
+
+              let quote_list = res.quote_list;
+              for (let i = 0; i < quote_list.length; i++) {
+                  let html = build_quote_html(quote_list, i);
+                  $('.more').before(html);
+              }
+              more_obj.html("------ 查看更多 ------");
+          } else {
+              if(res.last_quote_id == 0) {
+                  more_obj.html("------ 暂无数据 ------");
+              } else {
+                  more_obj.html("------ 已到底啦 ------");
+              }
+          }
+      })
+  });
+
+  // 构建清单HTML
+  function build_quote_html(quote_list, i) {
+      let html = "<li><div class='company clearfix'>";
+      html += "<span class='name'>"+ quote_list[i]['provider'] +"</span><span class='useful' data-quote-id='"+quote_list[i]['id']+"'><em class='a'>有用</em><em class='b'>无用</em></span></div>";
+      html += "<div class='mid clearfix'><span>报价费用：<em>"+ quote_list[i]['amount'] +"元</em></span>"
+          + "<span>地区：<em>" + quote_list[i]['area'] + "</em></span>"
+          + "<span>联系电话：<em>" + quote_list[i]['phone'] + "</em></span>"
+          + "</div>";
+      html += "<div class='details clearfix'>";
+
+      let detail_list = quote_list[i]['Quote_detail'];
+      for (let j = 0; j < detail_list.length; j++)  {
+          switch (parseInt(detail_list[j]['type'])) {
+              case 1:
+                  html += "<span><i>物料：</i>" + detail_list[j]['name'] + "   |  " + detail_list[j]['count'] + "  |  " + detail_list[j]['price'] + "元</span>";
+                  break;
+              case 2:
+                  html += "<span><i>人工：</i>" + detail_list[j]['name'] + "   |  " + detail_list[j]['count'] + "  |  " + detail_list[j]['price'] + "元</span>";
+                  break;
+              case 3:
+                  html += "<span><i>灯光：</i>" + detail_list[j]['name'] + "   |  " + detail_list[j]['count'] + "  |  " + detail_list[j]['price'] + "元</span>";
+                  break;
+              case 4:
+                  html += "<span><i>运输：</i>" + detail_list[j]['name'] + "   |  " + detail_list[j]['count'] + "  |  " + detail_list[j]['price'] + "元</span>";
+                  break;
+          }
+      }
+      html += "</div></li>";
+
+      return html;
+  }
+</script>
+</html>

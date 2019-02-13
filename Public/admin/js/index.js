@@ -2,9 +2,9 @@ var $,tab,skyconsWeather;
 layui.config({
 	base : "/Public/admin/js/"
 }).use(['bodyTab','form','element','layer','jquery'],function(){
-	var form = layui.form(),
+	var form = layui.form,
 		layer = layui.layer,
-		element = layui.element();
+		element = layui.element,
 		$ = layui.jquery;
 		tab = layui.bodyTab({
 			openTabNum : "50",  //最大可打开窗口数量
@@ -122,21 +122,21 @@ layui.config({
 				skins();
 			}
 		})
-	})
+	});
 
 	//退出
 	$(".signOut").click(function(){
 		window.sessionStorage.removeItem("menu");
 		menu = [];
 		window.sessionStorage.removeItem("curmenu");
-	})
+	});
 
 	//隐藏左侧导航
 	$(".hideMenu").click(function(){
 		$(".layui-layout-admin").toggleClass("showMenu");
 		//渲染顶部窗口
 		tab.tabMove();
-	})
+	});
 
 	//渲染左侧菜单
 	tab.render();
@@ -157,13 +157,13 @@ layui.config({
 						'</div>',
 			closeBtn : 0,
 			shade : 0.9
-		})
+		});
 		$(".admin-header-lock-input").focus();
 	}
 	$(".lockcms").on("click",function(){
 		window.sessionStorage.setItem("lockcms",true);
 		lockPage();
-	})
+	});
 	// 判断是否显示锁屏
 	if(window.sessionStorage.getItem("lockcms") == "true"){
 		lockPage();
@@ -210,7 +210,7 @@ layui.config({
 			$('body').removeClass('site-mobile');  //移动端点击菜单关闭菜单层
 		}
 		$(this).parent("li").siblings().removeClass("layui-nav-itemed");
-	})
+	});
 
 	//公告层
 	function showNotice(){
@@ -229,7 +229,7 @@ layui.config({
 				btn.css('text-align', 'center');
 				btn.on("click",function(){
 					window.sessionStorage.setItem("showNotice","true");
-				})
+				});
 				if($(window).width() > 432){  //如果页面宽度不足以显示顶部“系统公告”按钮，则不提示
 					btn.on("click",function(){
 						layer.tips('系统公告躲在了这里', '#showNotice', {
@@ -241,12 +241,12 @@ layui.config({
 	    });
 	}
 	//判断是否处于锁屏状态(如果关闭以后则未关闭浏览器之前不再显示)
-	if(window.sessionStorage.getItem("lockcms") != "true" && window.sessionStorage.getItem("showNotice") != "true"){
+	/*if(window.sessionStorage.getItem("lockcms") != "true" && window.sessionStorage.getItem("showNotice") != "true"){
 		showNotice();
-	}
+	}*/
 	$(".showNotice").on("click",function(){
 		showNotice();
-	})
+	});
 
 	//刷新后还原打开的窗口
 	if(window.sessionStorage.getItem("menu") != null){
@@ -295,7 +295,7 @@ layui.config({
 		}else{
 			layer.msg("您点击的速度超过了服务器的响应速度，还是等两秒再刷新吧！");
 		}
-	})
+	});
 
 	//关闭其他
 	$(".closePageOther").on("click",function(){
@@ -327,7 +327,7 @@ layui.config({
 		}
 		//渲染顶部窗口
 		tab.tabMove();
-	})
+	});
 	//关闭全部
 	$(".closePageAll").on("click",function(){
 		if($("#top_tabs li").length > 1){
@@ -345,24 +345,10 @@ layui.config({
 		//渲染顶部窗口
 		tab.tabMove();
 	})
-})
+});
 
 //打开新窗口
 function addTab(_this){
 	tab.tabAdd(_this);
-}
-
-//捐赠弹窗
-function donation(){
-	layer.tab({
-		area : ['260px', '367px'],
-		tab : [{
-			title : "微信",
-			content : "<div style='padding:30px;overflow:hidden;background:#d2d0d0;'><img src='images/wechat.jpg'></div>"
-		},{
-			title : "支付宝",
-			content : "<div style='padding:30px;overflow:hidden;background:#d2d0d0;'><img src='images/alipay.jpg'></div>"
-		}]
-	})
 }
 

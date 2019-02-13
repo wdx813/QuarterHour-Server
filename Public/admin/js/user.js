@@ -126,7 +126,7 @@ layui.config({
         }
     	var index = layer.msg('提交中，请稍候',{icon: 16,time:false,shade:0.8});
         $.ajax({
-            url: "/admin/index/change_pwd",
+            url: "/admin/admin/change_pwd",
             type: "POST",
             data: data.field,
             dataType: "JSON",
@@ -141,7 +141,7 @@ layui.config({
                 }
             },
             error: function (res) {
-                console.log('登录失败', res);
+                console.log('服务器错误~', res);
             }
         });
     	return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。

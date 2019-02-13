@@ -16,11 +16,6 @@ use Think\Verify;
 
 class LoginController extends Controller
 {
-    public function index()
-    {
-        $this->display();
-    }
-
     /**
      * 登录验证
      */
@@ -69,6 +64,7 @@ class LoginController extends Controller
      */
     public function verify_create()
     {
+        ob_clean();
         $config = array(
             'fontSize' => 16,
             'length'   => 4,

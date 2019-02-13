@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>一刻钟</title>
+    <link rel="icon" href="/Public/admin/images/favicon.ico">
+    <link href="/Public/new/css/style.css" rel="stylesheet">
+</head>
+<body>
+<div class="dingzhi">
+    <div class="header" style="background-image:url(/Public/new/banner/banner{$Think.session.current_sys_theme}.jpg);">
+        <div class="container">
+            <a href="#" class="logo_box clearfix">
+                <!--<img src="/Public/new/img/logo.png" alt="" class="logo">-->
+                <div class="logo_txt">
+                    <h1>{$Think.session.current_user_cname}</h1>
+                    <p>{$Think.session.current_user_slogen}</p>
+                </div>
+            </a>
+            <ul class="snav clearfix">
+                <li><a href="#"><img src="/Public/new/img/mes.png" alt=""></a></li>
+                <li><a href="/">首页</a></li>
+                <li><a href="javascript:void(0);" class="personal" id="change_btn">主题切换</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="grinter container clearfix">
+        <form class="grinter-left">
+            <div class="headimg">
+                <img src="/Public/home/headimg/{$userinfo.c_logo}" alt="{$userinfo.c_name}">
+            </div>
+            <h4>{$Think.session.current_user_cname}</h4>
+            <div class="txt">
+                <input placeholder="一句话描述自己吧" disabled="disabled" value="{$Think.session.current_user_slogen}">
+            </div>
+            <a class="dataf geren" data-f="/home/center/userinfo_show" class="geren" href="center/userinfo">个人资料</a>
+            <div class="box">
+                <p class="dataf" data-f="/home/center/collect_show"><span class="span1"></span>我的收藏</p>
+                <p class="dataf" data-f="center/account"><span class="span2"></span>账户安全</p>
+                <!--<p class="dataf" data-f="/home/center/recharge"><span class="span3"></span>充值入口</p>-->
+                <p class="dataf" data-f="center/exchange"><span class="span4"></span>会员兑换</p>
+                <p class="dataf" data-f="/home/center/notice_show"><span class="span5"></span>通知中心</p>
+            </div>
+        </form>
+
+        <div class="iframe_box">
+            <iframe class="s_iframe" id="iframepage" src="/home/center/collect_show" frameborder="0" scrolling="no"
+                    frameborder="0" onload="this.height=1150"></iframe>
+        </div>
+
+
+    </div>
+    <div class="index-footer">
+        <p>
+            <a href="">隐私政策</a>
+            <a href="">服务条款</a>
+            <a href="">联系我们</a>
+            <a style="border:none;" href="">关于我们</a>
+        </p>
+        <p>青岛全景婚礼网络信息有限公司 客服热线：0000-123-456</p>
+        <p>Copyright 2017-2018 inke.cn All rights reserved. 鲁ICP备123456号-1</p>
+        <p>增值业务经营许可证：鲁B2-12345678 </p>
+    </div>
+</div>
+<!-- 发票弹出开始 -->
+<div class="xiugai-bg">
+    <div class="xiugai-fp">
+        <p class="title">发票信息<span class="close">X</span></p>
+        <div class="form_con">
+            <form action="">
+                <div class="monery">
+                    <span>发票金额： </span>
+                    <span style="color:red;"> 2999</span>
+                    <label class="dian on"><input type="radio" data-tar="1" name="fp_type" checked="1"></label>
+                    <span> 增值税普通发票（电子版）</span>
+                    <label class="dian"><input type="radio" data-tar="2" name="fp_type"></label>
+                    <span> 增值税普通发票</span>
+                    <label class="dian"><input type="radio" data-tar="3" name="fp_type"></label>
+                    <span> 增值税专业发票</span>
+                </div>
+
+                <p class="bitian">发票信息（必填）</p>
+                <div class="content">
+                    <div>
+                        <span style="">发票名称： <input type="text"></span>
+                        <span>纳税人识别号： <input type="text"></span>
+                    </div>
+                    <div>
+                        <span>电子邮箱： <input type="text"></span>
+                        <span>联系电话： <input style="margin-left:25px;" type="text"></span>
+                    </div>
+
+                </div>
+                <p class="beizhu">备注：发票以图片的形式发送到你指定的电子邮箱中，打印后正常使用，省略邮寄时间</p>
+                <input type="submit" value="提交" class="sub">
+            </form>
+
+            <form action="">
+                <div class="monery">
+                    <span>发票金额： </span>
+                    <span style="color:red;"> 2999</span>
+                    <label class="dian"><input type="radio" data-tar="1" name="fp_type" checked="1"></label>
+                    <span> 增值税普通发票（电子版）</span>
+                    <label class="dian on"><input type="radio" data-tar="2" name="fp_type" checked="1"></label>
+                    <span> 增值税普通发票</span>
+                    <label class="dian"><input type="radio" data-tar="3" name="fp_type"></label>
+                    <span> 增值税专业发票</span>
+                </div>
+                <p class="bitian">发票信息（必填）</p>
+                <div class="content">
+                    <div>
+                        <span style="">发票名称： <input type="text"></span>
+                        <span>纳税人识别号： <input type="text"></span>
+                    </div>
+
+
+                </div>
+
+                <p class="bitian">发票邮寄信息（必填）</p>
+                <div class="content">
+                    <div>
+                        <span style="">收件地址： <input style="width:685px;" type="text"></span>
+
+                    </div>
+                    <div>
+                        <span>电子邮箱： <input type="text"></span>
+                        <span>联系电话： <input style="margin-left:25px;" type="text"></span>
+                    </div>
+                </div>
+                <p class="beizhu" style=" padding-bottom:100px;">备注：提交信息后，我们会在7个工作日之内邮寄出发票</p>
+                <input type="submit" value="提交" class="sub">
+            </form>
+
+            <form action="">
+                <div class="monery">
+                    <span>发票金额： </span>
+                    <span style="color:red;"> 2999</span>
+                    <label class="dian"><input type="radio" data-tar="1" name="fp_type"></label>
+                    <span> 增值税普通发票（电子版）</span>
+                    <label class="dian"><input type="radio" data-tar="2" name="fp_type"></label>
+                    <span> 增值税普通发票</span>
+                    <label class="dian on"><input type="radio" data-tar="3" name="fp_type" checked="1"></label>
+                    <span> 增值税专业发票</span>
+                </div>
+                <p class="bitian">发票信息（必填）</p>
+                <div class="content">
+                    <div>
+                        <span style="">公司名称： <input type="text"></span>
+                        <span>纳税人识别号： <input type="text"></span>
+                    </div>
+                    <div>
+                        <span style="">公司地址： <input type="text"></span>
+                        <span>公司电话： <input style=" margin-left:25px; type=" text"></span>
+                    </div>
+                    <div>
+                        <span style="">开户行： <input style=" margin-left:12px; type=" text"></span>
+                        <span>公司账户： <input style=" margin-left:25px;" type="text"></span>
+                    </div>
+                </div>
+                <p class="bitian">发票邮寄信息（必填）</p>
+                <div class="content">
+                    <div>
+                        <span style="">收件地址： <input style="width:685px;" type="text"></span>
+
+                    </div>
+                    <div>
+                        <span>电子邮箱： <input type="text"></span>
+                        <span>联系电话： <input style="margin-left:25px;" type="text"></span>
+                    </div>
+                </div>
+                <p class="beizhu" style=" padding-bottom:0;">备注：提交信息后，我们会在7个工作日之内邮寄出发票</p>
+                <input type="submit" value="提交" class="sub">
+            </form>
+        </div>
+    </div>
+</div>
+<!-- 发票弹出结束 -->
+
+<!-- 修改密码开始 -->
+<div class="main_mask"></div>
+<div class="xiugai-tc fadeout yzm_mm">
+    <form action="" class="xiugai-yzm change_pwd">
+        <h2><img src="/Public/home/images/jh.png" alt="">为保护您的账户安全，请妥善保管好密码</h2>
+        <span>手机号：</span><input class="shouji" type="text" name="phone" autocomplete="no" value="">
+        <br>
+        <div>
+            <span>验证码：</span>
+            <input class="captcha" type="text" name="captcha" placeholder="请输入验证码" autocomplete="no">
+            <a class="h1">获取验证码</a>
+        </div>
+        <div class="clearfix"></div>
+        <a href="javascript:void(0);" class="indexbg-btn" id="mm_qr">确认重置</a>
+    </form>
+</div>
+<div class="xiugai-tc sxg_mm fadeout">
+    <form action="/home/center/change_pwd" method="post">
+        <h2><img src="/Public/home/images/jh.png" alt="">为保护您的账户安全，请妥善保管好密码</h2>
+        <span>旧密码：</span><input type="password" class="old_pwd" name="old_pwd" placeholder="请输入原密码" autocomplete="no">
+        <span>新密码：</span><input type="password" class="new_pwd" name="new_pwd" placeholder="请输入新密码" autocomplete="no">
+        <span>确认新密码：</span><input type="password" class="confirm_pwd" name="confirm_pwd" placeholder="请再次输入新密码" autocomplete="no">
+        <div class="clearfix"></div>
+        <input type="submit" value="确认重置" class="indexbg-btn">
+    </form>
+</div>
+<!-- 修改密码结束 -->
+<!-- 修改手机号开始 -->
+<div class="xiugai-tc fadeout yzm_sj">
+    <form action="" class="xiugai-yzm change_phone">
+        <h2 class="xinxi"><img src="/Public/home/images/jh.png" alt="">我们致力于保护您的账户安全，请进行手机号验证</h2>
+        <h2 style="margin-left:22px; font-size:13px;">绑定新手机号，完善信息后可用新手机号登录</h2>
+        <span>手机号：</span>
+        <input class="shouji" type="text" name="old_phone" placeholder="请输入旧手机号码" autocomplete="no"> <br>
+        <div>
+            <span>验证码：</span>
+            <input class="captcha" type="text" name="captcha" placeholder="请输入验证码" autocomplete="no">
+            <a class="h1">获取验证码</a>
+        </div>
+        <div class="clearfix"></div>
+        <a href="javascript:void(0);" class="indexbg-btn" id="sj_qr">确认重置</a>
+    </form>
+</div>
+
+<div class="xiugai-tc sxg_sj fadeout">
+    <form action="/home/center/change_phone" method="post" class="xiugai-yzm">
+        <h2 class="xinxi"><img src="/Public/home/images/jh.png" alt="">我们致力于保护您的账户安全，请进行手机号验证</h2>
+        <h2 style="margin-left:22px; font-size:13px;">绑定新手机号，完善信息后可用新手机号登录</h2>
+        <span>手机号：</span>
+        <input class="shouji" type="text" name="new_phone" placeholder="请输入新手机号码" autocomplete="no"> <br>
+        <div>
+            <span>验证码：</span>
+            <input class="captcha" type="text" name="captcha" placeholder="请输入验证码" autocomplete="no">
+            <a class="h1">获取验证码</a>
+        </div>
+        <div class="clearfix"></div>
+        <input type="submit" value="确认重置" class="indexbg-btn">
+    </form>
+</div>
+<!-- 修改手机号结束 -->
+
+<script src="/Public/new/js/jquery.min.js"></script>
+<script src="/Public/new/layer/layer.js"></script>
+<script src="/Public/new/js/sharp_m.js"></script>
+<script src="/Public/new/js/jquery-form.js" ></script>
+<script>
+    $(function () {
+        $(".chongzhibox").click(function () {
+            $(this).css("border-color", "#ff443f");
+            $(this).children("img").css("opacity", "1");
+            $(this).css("box-shadow", "2px 2px 10px rgba(0,0,0,0.1)");
+            $(this).siblings().css("border-color", "#ccc");
+            $(this).siblings().children("img").css("opacity", "0");
+            $(this).siblings().css("box-shadow", "2px 2px 10px rgba(0,0,0,0)");
+            var n = $(this).index();
+            var price = $(this).find('span').text();
+            $('.chongzhi .h5 span').text(price);
+            $('.pay_outer .box_s').eq(n).fadeIn().siblings('.box_s').hide();
+        })
+    });
+    $('.dataf').click(function () {
+        var f_url = $(this).attr('data-f');
+        $('#iframepage').attr('src', f_url);
+        return false;
+    });
+
+    function reinitIframe() {
+        var iframe = document.getElementById("iframepage");
+        try {
+            var bHeight = iframe.contentWindow.document.body.scrollHeight;
+            var dHeight = iframe.contentWindow.document.documentElement.scrollHeight;
+            var height = Math.max(bHeight, dHeight);
+            iframe.height = height;
+        } catch (ex) {
+        }
+    }
+
+    window.setInterval("reinitIframe()", 200);
+    $(function () {
+        $("#iframepage").load(function () {
+            $(this).contents().find(".fp_btn").click(function () {
+                $('.xiugai-bg').fadeIn();
+                return false;
+            });
+            $(this).contents().find("#yzm_mm").click(function () {
+                $('.yzm_mm').fadeIn();
+                maskon();
+                return false;
+            });
+            $(this).contents().find("#yzm_sj").click(function () {
+                $('.yzm_sj').fadeIn();
+                maskon();
+                return false;
+            });
+        });
+    });
+
+
+    $('.xiugai-bg .close').click(function () {
+        $('.xiugai-bg').fadeOut();
+    });
+
+
+    $('.xiugai-fp .monery .dian input').click(function () {
+        var n_dex = $(this).attr('data-tar') - 1;
+        $('.xiugai-bg .form_con form').eq(n_dex).fadeIn().siblings('form').hide();
+    });
+
+    function maskon() {
+        $('.main_mask').fadeIn();
+    }
+
+    // 关闭弹窗
+    $('.main_mask').click(function () {
+        $(this).fadeOut();
+        $('.fadeout').fadeOut();
+        // 输入框置为空
+        $(":input").val("");
+    });
+
+    // 重置密码-校验
+    $('#mm_qr').click(function () {
+        let phone = $("input[name='phone']").val().trim();
+        if(phone == "") {
+            return layer.msg("请输入手机号~", {time: 1500});
+        }
+        if (!(/^1[34578]\d{9}$/.test(phone))) {
+            return layer.msg("请输入有效的手机号~", {time: 1500});
+        }
+        let captcha = $(".change_pwd .captcha").val().trim();
+        if(captcha == "") {
+            return layer.msg("请输入验证码~", {time: 1500});
+        }
+
+        $(this).parents('.fadeout').hide();
+        $('.sxg_mm').fadeIn();
+
+        // 验证
+        let data = {"phone": phone, "captcha": captcha, "type": 2};
+        let that = this;
+        $.post("/home/center/account_verify", data, function (res) {
+            if(res) {
+                if(res.result_code == 200) {
+                    $(that).parents('.fadeout').hide();
+                    $('.sxg_mm').fadeIn();
+                } else {
+                    layer.msg(res.result_msg, {time:1500});
+                }
+            } else {
+                layer.msg("服务器错误，请稍后重试~", {time:1500});
+            }
+        });
+    });
+
+    // 重置密码
+    $(".sxg_mm .indexbg-btn").click(function () {
+        let old_pwd = $(".sxg_mm .old_pwd").val().trim(),
+            new_pwd = $(".sxg_mm .new_pwd").val().trim(),
+            confirm_pwd = $(".sxg_mm .confirm_pwd").val().trim();
+        if(old_pwd == "") {
+            layer.msg("请输入原密码~", {time:1500});
+            return false;
+        }
+        if(new_pwd == "") {
+            layer.msg("请输入新密码~", {time:1500});
+            return false;
+        }
+        if(confirm_pwd == "") {
+            layer.msg("请再次输入新密码~", {time:1500});
+            return false;
+        }
+        if(new_pwd != confirm_pwd) {
+            layer.msg("两次输入的密码不一致~", {time:1500});
+            return false;
+        }
+
+        $(this).parent().ajaxSubmit(function (res) {
+            if(res) {
+                layer.msg(res.result_msg, {time:1500});
+            } else {
+                layer.msg("服务器错误，请稍后重试~", {time:1500});
+            }
+        });
+    });
+
+    // 重置手机号--校验
+    $('#sj_qr').click(function () {
+        let phone = $("input[name='old_phone']").val().trim();
+        if(phone == "") {
+            return layer.msg("请输入手机号~", {time: 1500});
+        }
+        if (!(/^1[34578]\d{9}$/.test(phone))) {
+            return layer.msg("请输入有效的手机号~", {time: 1500});
+        }
+        let captcha = $(".yzm_sj .captcha").val().trim();
+        if(captcha == "") {
+            return layer.msg("请输入验证码~", {time: 1500});
+        }
+
+        let data = {"phone":phone, "captcha":captcha, "type":3};
+        let that = this;
+
+        $.post("/home/center/account_verify", data, function (res) {
+            if(res) {
+                if(res.result_code == 200) {
+                    $(that).parents('.fadeout').hide();
+                    $('.sxg_sj').fadeIn();
+                } else {
+                    layer.msg(res.result_msg, {time:1500});
+                }
+            } else {
+                layer.msg("服务器错误，请稍后重试~", {time:1500});
+            }
+        });
+    });
+
+    // 修改手机号
+    $(".sxg_sj .indexbg-btn").click(function () {
+        let phone = $("input[name='new_phone']").val().trim();
+        if(phone == "") {
+            layer.msg("请输入新手机号~",{time:1500});
+            return false;
+        }
+        if (!(/^1[34578]\d{9}$/.test(phone))) {
+            layer.msg("请输入有效的手机号~", {time: 1500});
+            return false;
+        }
+
+        let captcha = $(".sxg_sj .captcha").val().trim();
+        if(captcha == "") {
+            layer.msg("请输入验证码~",{time:1500});
+            return false;
+        }
+        
+        $(this).parent().ajaxSubmit(function (res) {
+            if(res) {
+                layer.msg(res.result_msg, {time:1500});
+            } else {
+                layer.msg("服务器错误，请稍后重试~", {time:1500});
+            }
+        })
+    });
+</script>
+
+
+</body>
+</html>

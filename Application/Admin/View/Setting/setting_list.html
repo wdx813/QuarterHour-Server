@@ -1,0 +1,123 @@
+<include file="Public/header"/>
+<body class="childrenBody">
+<div class="layui-row layui-col-space20">
+    <div class="layui-col-md6">
+        <fieldset class="layui-elem-field">
+            <legend>作品类型管理</legend>
+            <div class="layui-field-box">
+                <div class="layui-word-aux"><i class="layui-icon layui-icon-tips"></i>  点击作品类型可对其进行编辑</div>
+                <!-- 数据表格 -->
+                <table class="layui-hide" id="vrType_list" lay-filter="vrType_table_filter"></table>
+            </div>
+        </fieldset>
+    </div>
+    <div class="layui-col-md6">
+        <fieldset class="layui-elem-field">
+            <legend>产品套餐管理</legend>
+            <div class="layui-field-box">
+                <div class="layui-word-aux"><i class="layui-icon layui-icon-tips"></i>  双击产品套餐可对其进行编辑</div>
+                <!-- 数据表格 -->
+                <table class="layui-hide" id="recharge_list" lay-filter="recharge_table_filter"></table>
+            </div>
+        </fieldset>
+    </div>
+</div>
+<div class="layui-row layui-col-space20">
+    <div class="layui-col-md6">
+        <fieldset class="layui-elem-field">
+            <legend>其他相关配置</legend>
+            <div class="layui-field-box">
+                <div class="layui-word-aux"><i class="layui-icon layui-icon-tips"></i>  双击配置可对其进行编辑</div>
+                <!-- 数据表格 -->
+                <table class="layui-hide" id="setting_list" lay-filter="setting_table_filter"></table>
+            </div>
+        </fieldset>
+    </div>
+</div>
+
+<script type="text/javascript" src="/Public/home/layui/layui.js"></script>
+<script>
+    layui.use(['layer', 'table', 'jquery', 'form'], function () {
+        let layer = parent.layer === undefined ? layui.layer : parent.layer,
+            table = layui.table,
+            $ = layui.jquery;
+
+        // 加载作品类型数据
+        table.render({
+            id: 'vrType_table',
+            width: 150,
+            elem: "#vrType_list",
+            url: "/admin/setting/vrType_list",
+            cols: [[
+                {field: 'type_name', title: '类型名称', edit: 'text'}
+            ]]
+        });
+
+        // 编辑作品类型
+        table.on('edit(vrType_table_filter)', function (obj) {
+            let data = obj.data;
+            $.post('/admin/setting/vrType_edit', data);
+        });
+
+        // 加载其他配置
+        table.render({
+            id: 'setting_table',
+            width: 150,
+            elem: "#setting_list",
+            url: "/admin/setting/list",
+            cols: [[
+                {field: 'name', title: '配置名称'}
+            ]]
+        });
+
+        table.on('rowDouble(setting_table_filter)', function (obj) {
+            let data = obj.data;
+            layui.data('setting_table', {key: 'setting', value: data});
+            let index = layer.open({
+                skin: 'layui-layer-molv',
+                title : "配置编辑",
+                type : 2,
+                content : "/admin/setting/setting_edit",
+                success : function(layero, index){
+                    setTimeout(function(){
+                        layer.tips('点击此处返回列表', '.layui-layer-setwin .layui-layer-close', {
+                            tips: 3
+                        });
+                    },500)
+                },
+            });
+            //改变窗口大小时，重置弹窗的高度，防止超出可视区域（如F12调出debug的操作）
+            $(window).resize(function(){
+                layer.full(index);
+            });
+            layer.full(index);
+        });
+
+        // 加载产品套餐数据
+        table.render({
+            id: 'recharge_table',
+            width: 300,
+            elem: "#recharge_list",
+            url: "/admin/setting/recharge_list",
+            cols: [[
+                {field: 'price', title: '产品价格'},
+                {field: 'expire_date', title: '有效期'}
+            ]]
+        });
+
+        // 编辑产品套餐
+        table.on('rowDouble(recharge_table_filter)', function (obj) {
+            let data = obj.data;
+            layui.data('recharge_table', {key: 'recharge', value: data});
+            layer.open({
+                skin: 'layui-layer-molv',
+                title : "产品套餐编辑",
+                type : 2,
+                area : ['500px', '450px'],
+                content : "/admin/setting/recharge_edit",
+            });
+        });
+    });
+</script>
+</body>
+</html>

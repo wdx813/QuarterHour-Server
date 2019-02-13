@@ -1,0 +1,306 @@
+<include file="Public/header" />
+<body>
+<div class="indexbg">
+    <!-- 登录框 -->
+   <div id="div-login" class="form-bg from-login">
+        <form class="layui-form">
+            <img src="/Public/home/images/login-logo.png" alt="">
+            <h2>手机号码登录</h2>
+            <input class="layui-input" type="text" name="phone" placeholder="请输入手机号" lay-verify="required|phone" autocomplete="off">
+            <input class="layui-input" type="password" name="password" placeholder="请输入密码" lay-verify="required|pwd" autocomplete="off">
+            <button class="layui-btn indexbg-btn" lay-submit="" lay-filter="login">登录</button>
+            <p class="oth"><a class="btn-forget-pwd">忘记密码？</a><span>还没有账号？<a class="btn-reg">点击注册</a></span></p>
+        </form>
+   </div>
+    <!-- 注册框 -->
+    <div id="div-register" class="form-bg">
+        <form class="layui-form">
+            <img src="/Public/home/images/login-logo.png" alt="">
+            <h2>手机号码注册</h2>
+            <input class="layui-input" type="text" name="c_name" placeholder="请输入公司名称" lay-verify="required" autocomplete="off">
+            <input id="phone-reg" class="layui-input" type="text" name="phone" placeholder="请输入手机号" lay-verify="required|phone" autocomplete="off">
+            <p class="forget">
+                <input class="layui-input" type="text" name="captcha" placeholder="请输入验证码" lay-verify="required|number|captcha" autocomplete="off">
+                <span id="btn-captcha-reg"><a>获取验证码</a></span>
+            </p>
+            <input class="layui-input pwd" type="password" name="password" placeholder="请输入密码" lay-verify="required|pwd" autocomplete="off">
+            <input class="layui-input" type="password" name="confirm_pwd" placeholder="请再次输入密码" lay-verify="required|confirmPwd" autocomplete="off">
+            <button class="layui-btn indexbg-btn" lay-submit="" lay-filter="register">注册</button>
+            <p class="ty">*点击注册即代表同意<a href="">《一刻钟用户协议》</a></p>
+            <p class="oth"><span>已有账号？<a class="btn-login">立即登录</a></span></p>
+        </form>
+    </div>
+    <!-- 忘记密码操作框 -->
+    <div id="div-forget-pwd" class="form-bg from-login">
+        <form class="layui-form" action="">
+            <img src="/Public/home/images/login-logo.png" alt="">
+            <h2>忘记密码</h2>
+            <input id="phone-update-pwd" class="layui-input" type="text" name="phone" placeholder="请输入手机号" lay-verify="required|phone" autocomplete="off">
+            <p class="forget">
+                <input class="layui-input" type="text" name="captcha" placeholder="请输入验证码" lay-verify="required|number|captcha" autocomplete="off">
+                <span id="btn-captcha-up"><a>获取验证码</a></span>
+            </p>
+            <input class="layui-input pwd" type="password" name="newPwd" placeholder="请设置新密码" lay-verify="required|pwd" autocomplete="off">
+            <input class="layui-input" type="password" name="confirmPwd" placeholder="请再次输入新密码" lay-verify="required|confirmPwd" autocomplete="off">
+            <button class="layui-btn indexbg-btn" lay-submit="" lay-filter="resetPwd">重置</button>
+        </form>
+    </div>
+    <div class="index-nav">
+        <a href="" class="logo"><img src="/Public/home/images/logo.png" alt=""></a>
+        <span>
+            <empty name="Think.session.current_user_cname">
+                <a class="index-login btn-login">登录</a>
+                <a class="index-reg btn-reg">注册</a>
+            <else />
+                <h2 class="index-cname">{$Think.session.current_user_cname}</h2>
+            </empty>
+        </span>
+    </div>
+    <div class="index-cart">
+        <a href="/home/case" class="index-cart1"></a>
+        <a href="/home/prefecture" class="index-cart2"></a>
+        <a href="/home/custom" class="index-cart3"></a>
+    </div>
+    <div class="index-footer">
+        <p>
+            <a href="">隐私政策</a>
+            <a href="">服务条款</a>
+            <a href="">联系我们</a>
+            <a style="border:none;" href="">关于我们</a>
+        </p>
+        <p>青岛云视拓智能科技有限公司 客服热线：0000-123-456</p>
+        <p>Copyright 2017-2018 inke.cn All rights reserved. 鲁ICP备123456号-1</p>
+        <p>增值业务经营许可证：鲁B2-12345678 </p>
+    </div>
+</div>
+<script type="text/javascript" src="/Public/home/layui/layui.js"></script>
+<script type="text/javascript">
+    layui.use(['form','layer'], function () {
+        let form = layui.form,
+            layer = parent.layer === undefined ? layui.layer : parent.layer,
+            $ = layui.jquery;
+
+        // 注册
+        form.on("submit(register)", function (data) {
+            let index = layer.msg('提交中，请稍候',{icon: 16,time:false,shade:0.8});
+            $.ajax({
+                url: "/home/index/register",
+                type: "POST",
+                data: data.field,
+                dataType: 'JSON',
+                success: function (res) {
+                    layer.close(index);
+                    if(res.result_code == 400) {
+                        layer.msg(res.result_msg);
+                    } else {
+                        layer.msg("恭喜您，注册成功！", {
+                            icon: 1,
+                            time: 1500
+                        }, function () {
+                            // 清空表单数据
+                            $(".layui-input").val("");
+                            // 跳转至登录框
+                            $("#div-login").show();
+                            $("#div-register").hide();
+                            $(".index-login").css({"background" : "#FF443F", "border" : "1px solid #FF443F"});
+                            $(".index-reg").css("background", "none");
+                        });
+                    }
+                },
+                error: function (res) {
+                    layer.msg("很抱歉，注册失败~");
+                }
+            });
+            return false;
+        });
+
+        // 登录
+        form.on("submit(login)", function (data) {
+            $.ajax({
+                url: "/home/index/login",
+                type: "POST",
+                dataType: "JSON",
+                data: data.field,
+                success: function (res) {
+                    if(res.result_code == 200) {
+                        history.go(0);
+                    } else {
+                        layer.msg(res.result_msg);
+                    }
+                },
+                error: function () {
+                    layer.msg("登录失败~");
+                }
+            });
+            return false;
+        });
+
+        // 修改密码
+        form.on("submit(resetPwd)", function (data) {
+            console.log(data.field);
+            $.ajax({
+                url: "/home/index/change_pwd",
+                type: "POST",
+                dataType: "JSON",
+                data: data.field,
+                success: function (res) {
+                    if(res.result_code == 200) {
+                        layer.msg("密码修改成功~", {
+                            icon: 1,
+                            time: 1500
+                        }, function () {
+                            // 清空表单数据
+                            $(".layui-input").val("");
+                            // 跳转至登录框
+                            $("#div-forget-pwd").hide();
+                        });
+                    } else {
+                        layer.msg(res.result_msg);
+                    }
+                },
+                error: function () {
+                    layer.msg("密码修改失败~");
+                }
+            });
+            return false;
+        });
+
+        // 倒计时
+        let setTime = null,
+            obj_reg_time = $("#btn-captcha-reg a"),
+            obj_up_time = $("#btn-captcha-up a");
+
+        // 注册时获取短信验证码
+        $("#btn-captcha-reg").click(function () {
+            let phone = $("#phone-reg").val();
+            if(!phone) {
+                layer.msg('手机号不能为空');
+                return false;
+            }
+            let data = {phone: phone, type: 1};
+
+            if(obj_reg_time.text() != "获取验证码") return false;
+            let time = 59;
+            obj_reg_time.text(time + "s");
+            setTime = setInterval(function(){
+                time--;
+                if(time <= 0){
+                    obj_reg_time.text("获取验证码");
+                    clearInterval(setTime);
+                } else {
+                    obj_reg_time.text(time + "s");
+                }
+            }, 1000);
+            sms_send(data);
+        });
+
+        // 修改密码时获取短信验证码
+        $("#btn-captcha-up").click(function () {
+            let phone = $("#phone-update-pwd").val();
+            if(!phone) {
+                layer.msg('手机号不能为空');
+                return false;
+            }
+            let data = {phone: phone, type: 2};
+
+            if(obj_up_time.text() != "获取验证码") return false;
+            let time = 59;
+            obj_up_time.text(time + "s");
+            setTime = setInterval(function(){
+                time--;
+                if(time <= 0){
+                    obj_up_time.text("获取验证码");
+                    clearInterval(setTime);
+                } else {
+                    obj_up_time.text(time + "s");
+                }
+            }, 1000);
+            return;
+            sms_send(data);
+        });
+
+        let sms_send = function(data) {
+            $.ajax({
+                url: "/home/index/sms_send",
+                type: "POST",
+                dataType: "JSON",
+                data: data,
+                success: function (res) {
+                    if(res.result_code == 400) {
+                        layer.msg(res.result_msg);
+                    }
+                },
+                error: function () {
+                    layer.msg("验证码获取失败~");
+                }
+            });
+        };
+
+        //添加验证规则
+        form.verify({
+            captcha: function(value, item){
+                if(value.length < 6){
+                    return "验证码长度不能小于6位";
+                }
+            },
+            pwd : function(value, item){
+                if(value.length < 6){
+                    return "密码长度不能小于6位";
+                }
+            },
+            confirmPwd : function(value, item){
+                if(!new RegExp($(".pwd").val()).test(value)){
+                    return "两次输入密码不一致，请重新输入！";
+                }
+            }
+        });
+
+        //改变div的高度
+        $(".indexbg").height($(window).height());
+        //改变div的宽度
+        $(".indexbg").width($(window).width());
+
+        // 显示登录框
+        $(".btn-login").click(function () {
+            $("#div-login").show();
+            $("#div-register").hide();
+            $(".index-login").css({"background" : "#FF443F", "border" : "1px solid #FF443F"});
+            $(".index-reg").css("background", "none");
+        });
+
+        // 显示注册框
+        $(".btn-reg").click(function () {
+            form.render();
+            $("#div-register").show();
+            $("#div-login").hide();
+            $(".index-reg").css({"background" : "#FF443F", "border" : "1px solid #FF443F"});
+            $(".index-login").css("background", "none");
+        });
+
+        // 隐藏操作框
+        $(".form-bg").click(function (e) {
+            if(e.target != this) return;
+            $(this).hide();
+            $(".index-login").css({"background" : "none", "border" : "1px solid #fff"});
+            $(".index-reg").css({"background" : "none", "border" : "1px solid #fff"});
+            // 清空表单数据
+            $(".layui-input").val("");
+            // 清空倒计时
+            if(setTime != null) {
+                obj_reg_time.text("获取验证码");
+                obj_up_time.text("获取验证码");
+                clearInterval(setTime);
+            }
+        });
+
+        // 显示重置密码框
+        $(".btn-forget-pwd").click(function () {
+            $("#div-forget-pwd").show();
+            $("#div-login").hide();
+            $(".index-login").css({"background" : "none", "border" : "1px solid #fff"});
+            $(".index-reg").css({"background" : "none", "border" : "1px solid #fff"});
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<include file="Public/header"/>
+<body class="childrenBody">
+<div class="layui-container">
+<form class="layui-form">
+    <input type="hidden" name="id" value="{$vr.id}">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">作品编号</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input vr_code" name="vr_code" value="{$vr.vr_code}" lay-verify="required" placeholder="请输入作品编号" autocomplete="off">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">作品标题</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" name="title" value="{$vr.title}" lay-verify="required" placeholder="请输入作品标题" autocomplete="off">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">作品链接</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" name="vr_src" value="{$vr.vr_src}" lay-verify="required|url" placeholder="请输入作品链接">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">作品类型</label>
+            <div class="layui-input-inline">
+                <select name="type_id">
+                    <option value="">请选择作品类型</option>
+                    <foreach name="type_list" item="type">
+                        <option value="{$type.id}" {$vr['type_id'] == $type['id'] ? 'selected' : ''}>{$type.type_name}</option>
+                    </foreach>
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">作品报价</label>
+            <div class="layui-input-inline" style="width: 100px;">
+                <input type="text" name="min_price" value="{$vr.min_price}" placeholder="￥" autocomplete="off" class="layui-input" lay-verify="required|number">
+            </div>
+            <div class="layui-form-mid">-</div>
+            <div class="layui-input-inline" style="width: 100px;">
+                <input type="text" name="max_price" value="{$vr.max_price}" placeholder="￥" autocomplete="off" class="layui-input" lay-verify="required|number">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">人气值</label>
+            <div class="layui-input-inline">
+                <input type="text" class="layui-input" name="popular" value="{$vr.popular}" lay-verify="required" placeholder="请输入人气值">
+            </div>
+            <div class="layui-form-mid layui-word-aux">请填写0~5的整数</div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">标签</label>
+            <div class="layui-input-block">
+                <input type="radio" name="tag" title="推荐" value="1" {$vr['tag'] == 1 ? 'checked' : '' }>
+                <input type="radio" name="tag" title="热门" value="2" {$vr['tag'] == 2 ? 'checked' : '' }>
+                <input type="radio" name="tag" title="最新" value="3" {$vr['tag'] == 3 ? 'checked' : '' }>
+            </div>
+        </div>
+
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">作品描述</label>
+        <div class="layui-input-block">
+            <textarea placeholder="请输入作品描述" name="description" class="layui-textarea">{$vr.description}</textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">作品清单</label>
+        <div class="layui-input-block">
+            <textarea class="layui-textarea layui-hide" name="quote" lay-verify="content" id="quote"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">缩略图</label>
+        <input id="vr_thumb" type="hidden" name="vr_thumb" value="{$vr.vr_thumb}">
+        <div class="layui-input-block">
+            <div class="layui-inline">
+                <button type="button" class="layui-btn" id="upload"><i class="layui-icon layui-icon-upload"></i>上传图片</button>
+            </div>
+            <div class="layui-inline">
+                <div class="layui-form-mid layui-word-aux">建议图片大小为600*500</div>
+            </div>
+            <div class="layui-upload-list">
+                <img width="300" height="200" class="layui-upload-img" id="thumb" src="/Public/home/thumb/{$vr.vr_thumb}">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit="" lay-filter="edit_vr">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+</div>
+<script type="text/javascript" src="/Public/home/layui/layui.js"></script>
+<script type="text/javascript">
+    layui.use(['layer', 'form', 'layedit', 'upload'], function () {
+        let layer = parent.layer === undefined ? layui.layer : parent.layer,
+            form = layui.form,
+            layedit = layui.layedit,
+            upload = layui.upload,
+            $ = layui.jquery;
+
+        //创建一个编辑器
+        let editIndex = layedit.build('quote');
+
+        //图片上传
+        let uploadInst = upload.render({
+            elem: '#upload'
+            ,url: '/admin/vr/upload'
+            ,data: {'file_name': $('.vr_code').val()}
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#thumb').attr('src', result); //图片链接（base64）
+                });
+            }
+            ,done: function(res){
+                console.log(res);
+                if(res && res.result_code === 200) {
+                    $('#vr_thumb').val(res.file_name);
+                }
+            }
+            ,error: function(){
+
+            }
+        });
+
+        // 提交表单
+        form.on('submit(edit_vr)', function (obj) {
+            let data = obj.field;
+            console.log(data);
+            $.post('/admin/vr/update', data, function (res) {
+                if(res && res.result_code === 200) {
+                    layer.msg('更新成功！', {icon: 6, time: 1000})
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

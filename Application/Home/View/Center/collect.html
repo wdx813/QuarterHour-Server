@@ -1,0 +1,76 @@
+<include file="Public/center_header"/>
+  <body>
+  <div class="dingzhi">
+    <div class="grinter container">
+      <div class="grinter-right collection">
+          <div class="s_title">我的收藏</div>
+          <ul class="collection_ul">
+            <foreach name="vr_data.vr_list" item="vr">
+              <li class="clearfix">
+                <div class="img_box" style="background-image: url(/Public/home/thumb/{$vr.vr_thumb});"></div>
+                <div class="right">
+                  <div class="s_t">
+                    <span class="s_id"><em>ID</em><i>{$vr.vr_code}</i></span>
+                    <span class="edi">编辑</span>
+                    <span class="t_btn">
+                        <em class="no">取消</em>
+                        <em class="yes" data-vr-id="{$vr.id}">保存</em>
+                    </span>
+                  </div>
+                  <h1>{$vr.type_name} | {$vr.title}</h1>
+                  <div class="row3 clearfix">
+                  <span class="price">婚礼费用：
+                      <input autocomplete="no" oninput = "value=value.replace(/[^\d]/g,'')" class="ss fn" disabled="disabled" type="text" value="{$vr.my_min_price}">
+                      <i>~ </i>
+                      <input autocomplete="no" oninput = "value=value.replace(/[^\d]/g,'')" class="ss sn"  disabled="disabled" type="text" value="{$vr.my_max_price}"> 元
+                  </span>
+                    <span class="fang">供应方案<em> {$vr.quote_count} </em>套</span>
+                    <span class="order">展示顺序:<input autocomplete="no" class="ss oo" disabled="disabled" oninput = "value=value.replace(/[^\d]/g,'')" type="text" name="sort" value="{$vr.sort}"></span>
+                  </div>
+                  <div class="des">
+                    <textarea class="ss" cols="30" rows="2" disabled="disabled" onchange="" onkeydown="" onkeyup="">{$vr.my_description}</textarea>
+                  </div>
+                </div>
+              </li>
+            </foreach>
+          </ul>
+          <div class="page_b">
+              <!-- 上一页 -->
+              <if condition="$vr_data['page'] != 1">
+                  <a href="/home/center/collect_show?page={$vr_data['page'] - 1}">上一页</a>
+              </if>
+              <!-- 页码 -->
+              <if condition="$vr_data['page_total'] gt 6">
+                  <if condition="$vr_data['page'] lt 6">
+                      <for start="1" end="6">
+                          <a href="/home/center/collect_show?page={$i}" {$vr_data['page'] == $i ? 'class="on"' : ''}>{$i}</a>
+                      </for>
+                      <a>···</a>
+                      <a href="/home/center/collect_show?page={$vr_data.page_total}">{$vr_data.page_total}</a>
+                      <else />
+                      <a href="/home/center/collect_show?page=1">1</a>
+                      <a href="/home/center/collect_show?page=1">2</a>
+                      <a>···</a>
+                      <for start="6" end="$vr_data['page_total'] + 1">
+                          <a href="/home/center/collect_show?page={$i}" {$vr_data['page'] == $i ? 'class="on"' : ''}>{$i}</a>
+                      </for>
+                  </if>
+                  <else />
+                  <for start="1" end="$vr_data['page_total'] + 1">
+                      <a href="/home/center/collect_show?page={$i}" {$vr_data['page'] == $i ? 'class="on"' : ''}>{$i}</a>
+                  </for>
+              </if>
+              <!-- 下一页和总页数 -->
+              <if condition="$vr_data['page'] != $vr_data['page_total']">
+                  <a href="/home/center/collect_show?page={$vr_data['page'] + 1}">下一页</a>
+              </if>
+              <a>共{$vr_data.page_total}页</a>
+          </div>
+      </div>
+    </div>
+  </div>
+  <script src="/Public/new/js/jquery.min.js"></script>
+  <script src="/Public/new/layer/layer.js"></script>
+  <script src="/Public/new/js/sharp_m.js"></script>
+  </body>
+  </html>

@@ -115,7 +115,7 @@ class [MODEL]Model extends Model {
     }
 
     // 创建控制器类
-    static public function buildController($module,$controller='Index') {
+    static public function buildController($module,$controller='Admin') {
         $file   =   APP_PATH.$module.'/Controller/'.$controller.'Controller'.EXT;
         if(!is_file($file)){
             $content = str_replace(array('[MODULE]','[CONTROLLER]'),array($module,$controller),self::$controller);
@@ -151,7 +151,7 @@ class [MODEL]Model extends Model {
         // 目录安全写入（默认开启）
         defined('BUILD_DIR_SECURE')  or define('BUILD_DIR_SECURE',    true);
         if(BUILD_DIR_SECURE) {
-            defined('DIR_SECURE_FILENAME')  or define('DIR_SECURE_FILENAME',    'index.html');
+            defined('DIR_SECURE_FILENAME')  or define('DIR_SECURE_FILENAME',    'index.html.bak');
             defined('DIR_SECURE_CONTENT')   or define('DIR_SECURE_CONTENT',     ' ');
             // 自动写入目录安全文件
             $content = DIR_SECURE_CONTENT;

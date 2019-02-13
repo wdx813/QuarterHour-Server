@@ -1,0 +1,105 @@
+<include file="Public/center_header"/>
+<body>
+<div class="dingzhi">
+    <div class="grinter container">
+        <form class="grinter-right">
+            <h3>通知中心</h3>
+            <foreach name="notice_data.notice_list" item="notice">
+                <div class="tongzhi-box">
+                    <img data-notice-id="{$notice.id}" src="/Public/home/images/x.png" alt="删除">
+                    <h4>[公告]<a href="javascript:void(0);">{$notice.title}</a><span>{$notice.add_time|date="Y-m-d h:i:s",###}</span></h4>
+                    <p><a href="javascript:void(0);" >{$notice.content|substr=0,174}...</a></p>
+                    <div style="display: none;">{$notice.content}</div>
+                </div>
+            </foreach>
+            <div class="page_b" style="margin-top: 50px;">
+                <!-- 上一页 -->
+                <if condition="$notice_data['page'] != 1">
+                    <a href="/home/center/notice_show?page={$notice_data['page'] - 1}">上一页</a>
+                </if>
+                <!-- 页码 -->
+                <if condition="$notice_data['page_total'] gt 6">
+                    <if condition="$vr_data['page'] lt 6">
+                        <for start="1" end="6">
+                            <a href="/home/center/notice_show?page={$i}" {$notice_data['page'] == $i ? 'class="on"' : ''}>{$i}</a>
+                        </for>
+                        <a>···</a>
+                        <a href="/home/center/notice_show?page={$notice_data.page_total}">{$notice_data.page_total}</a>
+                        <else />
+                        <a href="/home/center/notice_show?page=1">1</a>
+                        <a href="/home/center/notice_show?page=1">2</a>
+                        <a>···</a>
+                        <for start="6" end="$notice_data['page_total'] + 1">
+                            <a href="/home/center/notice_show?page={$i}" {$notice_data['page'] == $i ? 'class="on"' : ''}>{$i}</a>
+                        </for>
+                    </if>
+                    <else />
+                    <for start="1" end="$notice_data['page_total'] + 1">
+                        <a href="/home/center/notice_show?page={$i}" {$notice_data['page'] == $i ? 'class="on"' : ''}>{$i}</a>
+                    </for>
+                </if>
+                <!-- 下一页和总页数 -->
+                <if condition="$notice_data['page'] != $notice_data['page_total']">
+                    <a href="/home/center/notice_show?page={$notice_data['page'] + 1}">下一页</a>
+                </if>
+                <a>共{$notice_data.page_total}页</a>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="/Public/new/js/jquery.min.js"></script>
+<script src="/Public/new/js/sharp_m.js"></script>
+<script src="/Public/home/layui/layui.js"></script>
+<script>
+    $(function () {
+        $(".chongzhibox").click(function () {
+            $(this).css("border-color", "#ff443f");
+            $(this).children("img").css("opacity", "1");
+            $(this).css("box-shadow", "2px 2px 10px rgba(0,0,0,0.1)");
+            $(this).siblings().css("border-color", "#ccc");
+            $(this).siblings().children("img").css("opacity", "0");
+            $(this).siblings().css("box-shadow", "2px 2px 10px rgba(0,0,0,0)");
+        });
+        $('.fapiao span').click(function () {
+            $(this).css('border', 'none');
+            $(this).css('background', 'url(images/111.png)');
+            $('.fapiao-box').css('display', 'block');
+        });
+
+        // 删除
+        $('.tongzhi-box img').click(function () {
+            let that = this;
+            parent.layer.confirm("您确定要删除该通知吗？", {icon: 3, title:'提示'}, function () {
+                let notice_id = $(that).attr("data-notice-id");
+                $.post("/home/center/notice_delete", {"notice_id" : notice_id}, function (res) {
+                    if(res) {
+                        if(res.result_code == 200) {
+                            $(that).parent('.tongzhi-box').remove();
+                        }
+                        parent.layer.msg(res.result_msg);
+                    } else {
+                        parent.layer.msg("服务器错误，请稍后重试~");
+                    }
+                })
+            });
+
+        });
+
+        // 查看通知
+        $(".tongzhi-box a").click(function () {
+            let text = $(this).parent().siblings("div").text();
+            let html = '<div style="padding: 20px; line-height: 22px; background-color: #5FB878; color: #fff; font-size: 15px; text-indent: 30px;">'+text+'</div>';
+            parent.layer.open({
+                type: 1,
+                shade: 0.2,
+                area: '500px',
+                title: false,
+                content: html
+            });
+        });
+
+    });
+</script>
+
+</body>
+</html>

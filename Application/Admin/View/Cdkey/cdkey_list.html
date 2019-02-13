@@ -1,0 +1,122 @@
+<include file="Public/header"/>
+<body class="childrenBody">
+<blockquote class="layui-elem-quote news_search">
+    <div class="layui-inline">
+        <div class="layui-input-inline">
+            <input type="text" name="cdkey" value="" placeholder="请输入兑换码" class="layui-input search_input" autocomplete="off">
+        </div>
+        <a class="layui-btn search_btn">查询</a>
+    </div>
+</blockquote>
+<!-- 数据表格 -->
+<table class="layui-hide" id="cdkey_list" lay-filter="cdkey_table_filter"></table>
+
+<script type="text/javascript" src="/Public/home/layui/layui.js"></script>
+<!-- 数据表格的工具 -->
+<script type="text/html" id="toolbar">
+    <a class="layui-btn layui-btn-normal layui-btn-sm add_btn"><i class="layui-icon layui-icon-add-circle"></i>创建</a>
+    <!--<a class="layui-btn layui-btn-danger layui-btn-sm batchDel"><i class="layui-icon layui-icon-delete"></i>批量删除</a>-->
+</script>
+
+<script type="text/html" id="opt_btn">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script>
+    layui.use(['layer', 'table', 'form'], function () {
+        let layer = parent.layer === undefined ? layui.layer : parent.layer,
+            table = layui.table,
+            form = layui.form,
+            $ = layui.jquery;
+
+        // 加载页面数据
+        let tableIns = table.render({
+            id: 'cdkey_table',
+            elem: "#cdkey_list",
+            url: "/admin/cdkey/list",
+            cols: [[
+                {type: 'checkbox'}
+                , {field: 'cdkey', title: '兑换码'}
+                , {field: 'expire_time', title: '有效时间'}
+                , {field: 'create_time', title: '创建时间', sort: true}
+                , {field: 'phone', title: '使用者'}
+                , {field: 'use_time', title: '使用时间', sort: true}
+                , {title: '操作', templet: function (d) {
+                    if(d.user_id) {
+                        return '<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="detail">查看</a>';
+                    }
+                        return '<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>' +
+                            '<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>';
+                }}
+            ]],
+            page: true,
+            toolbar: '#toolbar'
+        });
+
+        // 查询
+        $('.search_btn').click(function () {
+            let keyword = $(".search_input").val();
+
+            tableIns.reload({
+                where: {'keyword' : keyword},
+            });
+        });
+
+        // 创建
+        $('.add_btn').click(function () {
+            let index = layer.open({
+                skin: 'layui-layer-molv',
+                title : "创建兑换码",
+                type : 2,
+                area : ['500px', '400px'],
+                content : "/admin/cdkey/cdkey_add",
+            });
+        });
+
+        // 批量禁用
+        $('.batchDel').on('click', function () {
+            let checkStatus = table.checkStatus('user_table');
+            if(checkStatus.data.length > 0) {
+                $.post('/admin/user/batch_forbid', {'users':checkStatus.data}, function () {
+                    tableIns.reload();
+                });
+            }
+        });
+
+        //监听行工具事件
+        table.on('tool(cdkey_table_filter)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            let data = obj.data //获得当前行数据
+                , layEvent = obj.event; //获得 lay-event 对应的值
+            console.log(data);
+            if (layEvent === 'edit') {
+                layer.open({
+                    skin: 'layui-layer-molv',
+                    title : "编辑兑换码",
+                    type : 2,
+                    area : ['500px', '450px'],
+                    content : "/admin/cdkey/edit?cdkey_id=" + data.id
+                });
+            } else if (layEvent === 'del') {
+                layer.confirm('您确定要删除该兑换码吗？', {icon: 3, title: '提示'}, function (index) {
+                    layer.close(index);
+                    //向服务端发送删除指令
+                    $.post('/admin/cdkey/delete', {'cdkey_id' : data.id}, function (res) {
+                        if(res && res.result_code === 200) {
+                            obj.del();
+                        }
+                    });
+                });
+            } else if (layEvent === 'detail') {
+                layer.open({
+                    skin: 'layui-layer-molv',
+                    title : "兑换码使用详情",
+                    type : 2,
+                    area : ['500px', '450px'],
+                    content : "/admin/cdkey/detail?cdkey_id=" + data.id
+                });
+            }
+        });
+    });
+</script>
+</body>
+</html>

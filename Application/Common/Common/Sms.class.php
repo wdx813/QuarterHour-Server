@@ -20,22 +20,22 @@ class Sms
     public static function send($receiver, $type = 1)
     {
         $url        = 'https://api.rtc.huaweicloud.com:10443/sms/batchSendSms/v1'; //APP接入地址+接口访问URI
-        $APP_KEY    = 'wIhgi4d8643Bf2x5r15ST929GV3R'; //APP_Key
-        $APP_SECRET = 'hCH145DO7MsGF1YqrJEjgm995W6S'; //APP_Secret
-        $sender     = 'csms18070202'; //签名通道号
+        $APP_KEY    = 'jI6Dn4CcZDwVjZJ656Kt8MlP6okV'; //APP_Key
+        $APP_SECRET = 'V89zMO3920SwR75uJ9fZX08LZ60H'; //APP_Secret
+        $sender     = 'csms18121001'; //签名通道号
         // 状态报告接收地址，为空或者不填表示不接收状态报告
         $statusCallback = '';
 
         // 模板 1.注册 2.修改密码
         switch ($type) {
             case 1:
-                $TEMPLATE_ID = 'd6e7c47145104f7ea4dc171008f3e9b0';
+                $TEMPLATE_ID = '237b0501c01d4735a3e2283cf0c02947';
                 break;
             case 2:
-                $TEMPLATE_ID = 'd6e7c47145104f7ea4dc171008f3e9b0';
+                $TEMPLATE_ID = '237b0501c01d4735a3e2283cf0c02947';
                 break;
             default:
-                $TEMPLATE_ID = 'd6e7c47145104f7ea4dc171008f3e9b0';
+                $TEMPLATE_ID = '237b0501c01d4735a3e2283cf0c02947';
                 break;
         }
 

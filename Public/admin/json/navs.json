@@ -1,41 +1,56 @@
-[{
-	"title" : "后台首页",
-	"icon" : "icon-computer",
-	"href" : "page/main.html",
-	"spread" : false
-},{
-	"title" : "文章列表",
-	"icon" : "icon-text",
-	"href" : "page/news/newsList.html",
-	"spread" : false
-},{
-	"title" : "友情链接",
-	"icon" : "&#xe64c;",
-	"href" : "page/links/linksList.html",
-	"spread" : false
-},{
-	"title" : "系统基本参数",
-	"icon" : "&#xe631;",
-	"href" : "page/systemParameter/systemParameter.html",
-	"spread" : false
-},{
-	"title" : "其他页面",
-	"icon" : "&#xe630;",
-	"href" : "",
-	"spread" : false,
-	"children" : [
-		{
-			"title" : "404页面",
-			"icon" : "&#xe61c;",
-			"href" : "page/404.html",
-			"spread" : false
-		},
-		{
-			"title" : "登录",
-			"icon" : "&#xe609;",
-			"href" : "page/login/login.html",
-			"spread" : false,
-			"target" : "_blank"
-		}
-	]
-}]
+[
+  {
+    "title" : "后台首页",
+    "icon" : "&#xe68e;",
+    "href" : "/admin/base/main",
+    "spread" : false
+  },
+  {
+    "title": "用户管理",
+    "icon": "&#xe612;",
+    "href": "/admin/user/user_list",
+    "spread": false
+  },
+  {
+    "title": "作品管理",
+    "icon": "&#xe64a;",
+    "href": "/admin/vr/vr_list",
+    "spread": false
+  },
+  {
+    "title": "礼券管理",
+    "icon": "&#xe609;",
+    "href": "/admin/cdkey/cdkey_list",
+    "spread": false
+  },
+  {
+    "title": "订单管理",
+    "icon": "&#xe60a;",
+    "href": "/admin/order/order_list",
+    "spread": false
+  },
+  {
+    "title": "发票管理",
+    "icon": "&#xe60a;",
+    "href": "/admin/invoice/invoice_list",
+    "spread": false
+  },
+  {
+    "title": "公告管理",
+    "icon": "&#xe645;",
+    "href": "/admin/notice/notice_list",
+    "spread": false
+  },
+  {
+    "title": "婚礼定制",
+    "icon": "&#xe631;",
+    "href": "/admin/custom/custom_list",
+    "spread": false
+  },
+  {
+    "title": "系统配置",
+    "icon": "&#xe620;",
+    "href": "/admin/setting/setting_list",
+    "spread": false
+  }
+]

@@ -27,4 +27,23 @@ class BaseController extends Controller
             }
         }
     }
+
+    public function index()
+    {
+        $this->display('Public:index');
+    }
+
+    public function main()
+    {
+        $this->display('Public:main');
+    }
+
+    /**
+     * 退出
+     */
+    public function logout()
+    {
+        session('current_admin_id', null);
+        $this->redirect('admin/login/index');
+    }
 }

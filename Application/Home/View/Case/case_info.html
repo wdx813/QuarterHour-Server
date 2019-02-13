@@ -1,0 +1,126 @@
+<!-- 头部引入 -->
+<include file="Public/header_new" />
+<body>
+<!--<div class="header">
+    <div class="container">
+        <a href="#" class="logo_box clearfix">
+            <img src="/Public/new/img/logo.png" alt="" class="logo">
+            <img src="/Public/new/img/name.png" alt="" class="name">
+        </a>
+        <ul class="snav clearfix">
+            <li><a href="#"><img src="/Public/new/img/mes.png" alt=""></a></li>
+            <li><a href="/">首页</a></li>
+            <li><a href="#" class="personal">个人中心</a></li>
+        </ul>
+    </div>
+</div>-->
+<div class="position container">
+    <a href="/home/case">方案系统</a> &gt; <a class="on">案例详情</a>
+</div>
+<div class="in_banner">
+    <iframe src="{$vr_info.vr_src}" frameborder="no" width="100%" height="540"></iframe>
+</div>
+<div class="case_in container">
+    <div class="title clearfix">
+        <div class="left">
+            <h1>{$vr_info.type_name} | {$vr_info.title}</h1>
+            <h2>婚礼费用：<span>{$vr_info.min_price}~{$vr_info.max_price}元</span></h2>
+        </div>
+        <div class="pop">
+            <p class="star">人气值：
+                <span>
+                    <for start="1" end="$vr_info['popular'] + 1">
+                        <em></em>
+                    </for>
+                </span>
+            </p>
+            <p class="person">{$vr_info.view_count}</p>
+        </div>
+    </div>
+    <div class="in_id clearfix">
+        <span class="l"><em>ID</em>{$vr_info.vr_code}</span>
+        <span class="store">收藏：<em class="in_heart {$vr_info['is_collect'] ? 'on' : ''}" data-vr-id="{$vr_info.id}"></em></span>
+    </div>
+</div>
+<ul class="in_nav container clearfix">
+    <li class="on"><a href="javascript:;">作品简介</a></li>
+    <li><a href="javascript:;">物料详情</a></li>
+</ul>
+<div class="in_con container">
+    <div class="box">
+        {$vr_info.description}
+    </div>
+    <div class="box">
+        {$vr_info.quote}
+    </div>
+</div>
+<div class="guess container">
+    <div class="tt">推荐作品</div>
+    <!-- Swiper -->
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+            <foreach name="recom_list" item="vr">
+                <div class="swiper-slide">
+                    <a href="get_vr_info?vr_id={$vr.id}">
+                        <div class="img_box" style="background-image: url(/Public/home/thumb/{$vr.vr_thumb});"></div>
+                        <div class="title clearfix">
+                            <span>{$vr.type_name}</span>
+                            <i>人气值：
+                                <for start="1" end="$vr['popular'] + 1">
+                                    <em></em>
+                                </for>
+                            </i>
+                        </div>
+                        <div class="price">参考价位：<span>{$vr.min_price}～{$vr.max_price}元</span></div>
+                    </a>
+                </div>
+            </foreach>
+        </div>
+    </div>
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+    <script>
+        var n_width = $(window).width();
+        if (n_width > 992) {
+            var swiper = new Swiper('.swiper-container', {
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+                slidesPerView: 3,
+                spaceBetween: 25,
+            });
+        } else {
+            var swiper = new Swiper('.swiper-container', {
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+                slidesPerView: 1,
+                spaceBetween: 0,
+            });
+        }
+
+    </script>
+</div>
+<!-- 底部信息 -->
+<include file="Public/footer" />
+</body>
+<script src="/Public/home/js/index.js"></script>
+<script>
+    // 收藏
+    $('.in_id .store .in_heart').click(function () {
+        $(this).toggleClass('on');
+        let vr_id = $(this).attr("data-vr-id");
+        $.post("/home/collect/add_or_cancel", {"vr_id" : vr_id}, function (res) {
+            console.log(res);
+        })
+    });
+
+    $('.in_nav li').click(function () {
+        $(this).addClass('on').siblings().removeClass('on');
+        var n = $(this).index();
+        $('.in_con .box').eq(n).fadeIn().siblings().hide();
+    });
+</script>
+</html>

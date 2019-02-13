@@ -56,9 +56,8 @@ class IndexController extends Controller
     public function register()
     {
         $params = I('post.');
-
         // 校验短信验证码
-        $check_res = Sms::check_captcha($params['phone'], $params['captcha'], C('captcha_type.register'));
+        $check_res = Sms::check_captcha($params['phone'], $params['captcha'], C('CAPTCHA_TYPE.REGISTER'));
         if ($check_res['state'] == false) {
             $res = array(
                 'result_code' => 400,
@@ -111,6 +110,9 @@ class IndexController extends Controller
         if ($user) {
             session('current_user_id', $user['id']);
             session('current_user_cname', $user['c_name']);
+            session('current_user_slogen', $user['c_slogen']);
+            session('current_sys_theme', $user['sys_theme']);
+            session('vip_end_time', $user['end_time']);
             $res = array(
                 'result_code' => 200,
                 'result_msg'  => '登录成功~'
@@ -130,7 +132,7 @@ class IndexController extends Controller
     public function change_pwd()
     {
         // 校验短信验证码
-        $check_res = Sms::check_captcha(I('post.phone'), I('post.captcha'), C('captcha_type.update_pwd'));
+        $check_res = Sms::check_captcha(I('post.phone'), I('post.captcha'), C('CAPTCHA_TYPE.UPDATE_PWD'));
         if ($check_res['state'] == false) {
             $res = array(
                 'result_code' => 400,
@@ -162,5 +164,23 @@ class IndexController extends Controller
             }
         }
         $this->ajaxReturn($res);
+    }
+
+
+    /**
+     * 获取配置内容
+     */
+    public function setting()
+    {
+        $code = I('get.code');
+        /*$about_us = M('Setting')->where(array('code' => $code))->find();
+        $content = htmlspecialchars_decode($about_us['content']);
+        $this->assign('content', $content);*/
+        $this->display("Public:$code");
+    }
+
+    public function test()
+    {
+        qrcode('https://www.baidu.com', 6);
     }
 }

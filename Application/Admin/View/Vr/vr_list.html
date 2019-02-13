@@ -1,0 +1,165 @@
+<include file="Public/header"/>
+<body class="childrenBody">
+<blockquote class="layui-elem-quote news_search">
+    <div class="layui-inline">
+        <div class="layui-input-inline">
+            <input type="text" name="keyword" value="" placeholder="请输入关键字" class="layui-input search_input" autocomplete="off">
+        </div>
+        <a class="layui-btn search_btn">查询</a>
+    </div>
+    <div style="float: right;">
+        <div class="layui-inline">
+            <a class="layui-btn layui-btn-normal vr_add">创建</a>
+        </div>
+        <!--<div class="layui-inline">
+            <a class="layui-btn layui-btn-danger batchDel">批量删除</a>
+        </div>-->
+    </div>
+</blockquote>
+<!-- 数据表格 -->
+<table class="layui-hide" id="vr_list" lay-filter="vr_table_filter"></table>
+
+<script type="text/javascript" src="/Public/home/layui/layui.js"></script>
+<!-- 数据表格的工具 -->
+<script type="text/html" id="barDemo">
+    <!--<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="detail">查看</a>-->
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<!-- 数据表格中是否禁用栏 -->
+<script type="text/html" id="switchTpl">
+    <input type="checkbox" name="del_state" value="{{d.id}}" lay-skin="switch" lay-text="是|否" lay-filter="forbidFilter" {{ d.del_state == 1 ? 'checked' : '' }}>
+</script>
+<script>
+    layui.use(['layer', 'table', 'jquery', 'form'], function () {
+        let layer = parent.layer === undefined ? layui.layer : parent.layer,
+            table = layui.table,
+            form = layui.form,
+            $ = layui.jquery;
+
+        // 加载页面数据
+        let tableIns = table.render({
+            id: 'vr_table',
+            elem: "#vr_list",
+            url: "/admin/vr/list",
+            cols: [[
+                {type: 'checkbox'}
+                , {field: 'vr_code', width: 100, title: 'ID'}
+                , {field: 'title', title: '作品标题'}
+                , {field: 'type_name', title: '作品类型'}
+                , {field: 'tag', width: 100, title: '作品标签', templet: function (d) {
+                        let tag = '';
+                        switch (parseInt(d.tag)) {
+                            case 1:
+                                tag = '<span style="background-color: #F35A5D; color: #fff; padding: 5px; border-radius: 3px;">推荐</span>';
+                                break;
+                            case 2:
+                                tag = '<span style="background-color: #FFA652; color: #fff; padding: 5px; border-radius: 3px;">热门</span>';
+                                break;
+                            case 3:
+                                tag = '<span style="background-color: #61A5F0; color: #fff; padding: 5px; border-radius: 3px;">最新</span>';
+                                break;
+                        }
+                        return tag;
+                    }}
+                , {title: '作品报价', templet: function (d) {
+                        return d.min_price + '元~' + d.max_price + '元';
+                    }}
+                , {field: 'add_time', title: '添加时间', sort: true}
+                , {title: '操作', toolbar: '#barDemo'}
+            ]],
+            page: true
+        });
+
+        // 查询
+        $('.search_btn').click(function () {
+            let keyword = $(".search_input").val();
+            tableIns.reload({
+                where: {'keyword' : keyword},
+            });
+        });
+
+        // 禁用
+        form.on('switch(forbidFilter)', function (obj) {
+            let user_id = this.value,
+                del_state = obj.elem.checked == true ? 1 : 0;
+            $.post('/admin/user/forbid', {'del_state':del_state, 'user_id':user_id});
+        });
+
+        // 批量禁用
+        $('.batchDel').on('click', function () {
+            let checkStatus = table.checkStatus('user_table');
+            if(checkStatus.data.length > 0) {
+                $.post('/admin/user/batch_forbid', {'users':checkStatus.data}, function () {
+                    tableIns.reload();
+                });
+            }
+        });
+
+        // 添加
+        $('.vr_add').on('click', function () {
+            let index = layer.open({
+                skin: 'layui-layer-molv',
+                title : "添加作品",
+                type : 2,
+                content : "/admin/vr/add",
+                success : function(layero, index){
+                    setTimeout(function(){
+                        layer.tips('点击此处返回列表', '.layui-layer-setwin .layui-layer-close', {
+                            tips: 3
+                        });
+                    },500)
+                },
+            });
+            //改变窗口大小时，重置弹窗的高度，防止超出可视区域（如F12调出debug的操作）
+            $(window).resize(function(){
+                layer.full(index);
+            });
+            layer.full(index);
+        });
+
+        //监听行工具事件
+        table.on('tool(vr_table_filter)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            let data = obj.data //获得当前行数据
+                , layEvent = obj.event; //获得 lay-event 对应的值
+            if (layEvent === 'detail') {
+
+            } else if (layEvent === 'del') {
+                layer.confirm('您确定要删除该作品吗？', {icon: 3, title: '提示'}, function (index) {
+                    layer.close(index);
+                    //向服务端发送禁用指令
+                    $.post('/admin/vr/delete', {vr_id: data.id}, function (res) {
+                        if(res && res.result_code === 200) {
+                            obj.del();
+                            layer.msg('删除成功');
+                        } else {
+                            layer.msg('删除失败');
+                        }
+                    });
+                });
+            } else if (layEvent === 'edit') {
+                let index = layer.open({
+                    skin: 'layui-layer-molv',
+                    title : "编辑作品",
+                    type : 2,
+                    content : "/admin/vr/edit?vr_id=" + data.id,
+                    success : function(layero, index){
+                        setTimeout(function(){
+                            layer.tips('点击此处返回列表', '.layui-layer-setwin .layui-layer-close', {
+                                tips: 3
+                            });
+                        },500)
+                    },
+                });
+                //改变窗口大小时，重置弹窗的高度，防止超出可视区域（如F12调出debug的操作）
+                $(window).resize(function(){
+                    layer.full(index);
+                });
+                layer.full(index);
+
+            }
+        });
+    });
+</script>
+</body>
+</html>

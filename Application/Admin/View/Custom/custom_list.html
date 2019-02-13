@@ -1,0 +1,114 @@
+<include file="Public/header"/>
+<body class="childrenBody">
+<blockquote class="layui-elem-quote news_search">
+    <div class="layui-inline">
+        <div class="layui-input-inline">
+            <input type="text" name="keyword" value="" placeholder="请输入关键字" class="layui-input search_input" autocomplete="off">
+        </div>
+        <a class="layui-btn search_btn">查询</a>
+    </div>
+</blockquote>
+<!-- 数据表格 -->
+<table class="layui-hide" id="custom_list" lay-filter="custom_table_filter"></table>
+
+<script type="text/javascript" src="/Public/home/layui/layui.js"></script>
+<script>
+    layui.use(['layer', 'table', 'jquery', 'form'], function () {
+        let layer = parent.layer === undefined ? layui.layer : parent.layer,
+            table = layui.table,
+            form = layui.form,
+            $ = layui.jquery;
+
+        // 加载页面数据
+        let tableIns = table.render({
+            id: 'custom_table',
+            elem: "#custom_list",
+            url: "/admin/custom/list",
+            cols: [[
+                {type: 'checkbox'}
+                , {field: 'c_name', title: '公司名称'}
+                , {field: 'contacts_name', title: '联系人'}
+                , {field: 'contacts_mobile', title: '联系电话'}
+                , {field: 'shoot_date', title: '拍摄日期'}
+                , {field: 'shoot_site', title: '拍摄地点'}
+                , {field: 'wedding_style', title: '婚礼风格'}
+                , {
+                    title: '状态', templet: function (d) {
+                            return d.check_status == 0 ?
+                                '<span style="background-color: #009688; color: #fff; padding: 5px; border-radius: 3px;">未审核</span>' :
+                                '<span style="background-color: #FF5722; color: #fff; padding: 5px; border-radius: 3px;">已审核</span>';
+                    }
+                }
+                , {title: '操作', templet: function (d) {
+                            return d.check_status == 1 ?
+                             '<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="detail">查看</a>' :
+                             '<a class="layui-btn layui-btn-xs" lay-event="check">审核</a>';
+                    }
+                }
+            ]],
+            page: true
+        });
+
+        // 查询
+        $('.search_btn').click(function () {
+            let keyword = $(".search_input").val();
+
+            tableIns.reload({
+                where: {'keyword' : keyword},
+            });
+        });
+
+        //监听行工具事件
+        table.on('tool(custom_table_filter)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            let data = obj.data //获得当前行数据
+                , layEvent = obj.event; //获得 lay-event 对应的值
+            if (layEvent === 'detail') {
+                for(let k in data) {
+                    layui.data('custom', {key: k, value: data[k]});
+                }
+                let index = layer.open({
+                    skin: 'layui-layer-molv',
+                    title : "审核定制",
+                    type : 2,
+                    content : "/admin/custom/custom_info",
+                    success : function(layero, index){
+                        setTimeout(function(){
+                            layer.tips('点击此处返回列表', '.layui-layer-setwin .layui-layer-close', {
+                                tips: 3
+                            });
+                        },500)
+                    },
+                });
+                //改变窗口大小时，重置弹窗的高度，防止超出可视区域（如F12调出debug的操作）
+                $(window).resize(function(){
+                    layer.full(index);
+                });
+                layer.full(index);
+            } else if (layEvent === 'check') {
+                for(let k in data) {
+                    layui.data('custom', {key: k, value: data[k]});
+                }
+                let index = layer.open({
+                    skin: 'layui-layer-molv',
+                    title : "审核定制",
+                    type : 2,
+                    content : "/admin/custom/custom_edit",
+                    success : function(layero, index){
+                        setTimeout(function(){
+                            layer.tips('点击此处返回列表', '.layui-layer-setwin .layui-layer-close', {
+                                tips: 3
+                            });
+                        },500)
+                    },
+                });
+                //改变窗口大小时，重置弹窗的高度，防止超出可视区域（如F12调出debug的操作）
+                $(window).resize(function(){
+                    layer.full(index);
+                });
+                layer.full(index);
+            }
+        });
+    });
+</script>
+</body>
+</html>

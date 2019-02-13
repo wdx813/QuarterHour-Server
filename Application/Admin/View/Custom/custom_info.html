@@ -1,0 +1,64 @@
+<include file="Public/header"/>
+<body class="childrenBody">
+<div class="layui-container">
+<form class="layui-form" lay-filter="custom-form" style="width: 60%;">
+    <input type="hidden" name="id" value="">
+    <div class="layui-form-item">
+        <label class="layui-form-label">公司名称</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" name="c_name" value="" readonly>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">联系人</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" name="contacts_name" value="" readonly>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">联系电话</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" name="contacts_mobile" value="" readonly>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">拍摄日期</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" name="shoot_date" value="" readonly>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">拍摄地点</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" name="shoot_site" value="" readonly>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">婚礼风格</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" name="wedding_style" value="" readonly>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">备注</label>
+        <div class="layui-input-block">
+            <textarea name="remark" class="layui-textarea" readonly></textarea>
+        </div>
+    </div>
+</form>
+</div>
+<script type="text/javascript" src="/Public/home/layui/layui.js"></script>
+<script type="text/javascript">
+    layui.use(['form'], function () {
+        let form = layui.form;
+        form.val('custom-form', layui.data('custom'));
+    });
+</script>
+</body>
+</html>

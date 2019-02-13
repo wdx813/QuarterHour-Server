@@ -1,0 +1,117 @@
+<!-- 头部引入 -->
+<include file="Public/header_new" />
+<body>
+<div class="header2">
+    <div class="container">
+        <a href="/" class="left clearfix">
+            <img src="/Public/new/img/index_logo.png" alt="">
+        </a>
+        <div class="right">
+            <div class="c_search">
+                <form action="/home/prefecture" method="get">
+                    <input type="hidden" name="type" value="{$vr_data.type}">
+                    <input type="text" name="keyword" autocomplete="off" placeholder="请输入搜索关键字" value="{$vr_data.keyword}">
+                    <input type="submit" value="搜 索">
+                </form>
+            </div>
+            <a href="#"><img src="/Public/new/img/mes_b.png" alt=""></a>
+            <a href="/">首页</a>
+            <a href="/home/center">个人中心</a>
+        </div>
+    </div>
+</div>
+<div class="hy_banner">
+    <img src="/Public/new/img/banner2.jpg" alt="">
+</div>
+<div class="hy_list">
+    <div class="title">
+        <img src="/Public/new/img/wedding.png" alt="">
+        <span>婚礼大赏</span>
+    </div>
+
+    <div class="hy_tab">
+        <a href="prefecture" {$vr_data['type'] ? '' : 'class="on"'} >全部作品</a>
+        <a href="prefecture?type=1" {$vr_data['type'] == 1 ? 'class="on"' : ''} >喜庆典雅</a>
+        <a href="prefecture?type=2" {$vr_data['type'] == 2 ? 'class="on"' : ''} >欧式梦幻</a>
+        <a href="prefecture?type=3" {$vr_data['type'] == 3 ? 'class="on"' : ''} >唯美浪漫</a>
+        <a href="prefecture?type=4" {$vr_data['type'] == 4 ? 'class="on"' : ''} >森系清新</a>
+    </div>
+
+    <ul class="hy_ul container">
+        <foreach name="vr_data.vr_list" item="vr">
+            <li class="col-md-4 {$vr.tag_css}">
+                <div>
+                    <div class="img_box" style="background-image: url(/Public/home/thumb/{$vr.vr_thumb});">
+                        <div class="mask_hy">
+                            <div class="no">编号：{$vr.vr_code}</div>
+                            <a href="prefecture/get_vr_info?vr_id={$vr.id}" class="btn_hy">浏览</a>
+                        </div>
+                    </div>
+                    <div class="bottom">
+                        <div href="prefecture/get_vr_info?vr_id={$vr.id}" class="title_">
+                            <a href="prefecture/get_vr_info?vr_id={$vr.id}">{$vr.type_name} | {$vr.title}</a>
+                            <span class="heart {$vr['is_collect'] ? 'on' : ''}" data-vr-id="{$vr.id}"></span>
+                        </div>
+                        <div class="pop clearfix">
+                            <span class="star">人气值：
+                                <for start="1" end="$vr['popular'] + 1">
+                                    <em></em>
+                                </for>
+                            </span>
+                            <span class="count">供应商方案(套)：<i>{$vr.quote_count}</i></span>
+                        </div>
+                        <div class="price">
+                            参考价位：<span>{$vr.min_price}~{$vr.max_price}元</span>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </foreach>
+    </ul>
+</div>
+<div class="page_b">
+    <!-- 上一页 -->
+    <if condition="$vr_data['page'] != 1">
+        <a href="prefecture?page={$vr_data['page'] - 1}&type={$vr_data.type}&keyword={$vr_data.keyword}">上一页</a>
+    </if>
+    <!-- 页码 -->
+    <if condition="$vr_data['page_total'] gt 6">
+        <if condition="$vr_data['page'] lt 6">
+            <for start="1" end="6">
+                <a href="prefecture?page={$i}&type={$vr_data.type}&keyword={$vr_data.keyword}" {$vr_data['page'] == $i ? 'class="on"' : ''}>{$i}</a>
+            </for>
+            <a>···</a>
+            <a href="prefecture?page={$vr_data.page_total}&type={$vr_data.type}&keyword={$vr_data.keyword}">{$vr_data.page_total}</a>
+            <else />
+            <a href="prefecture?page=1&type={$vr_data.type}&keyword={$vr_data.keyword}">1</a>
+            <a href="prefecture?page=1&type={$vr_data.type}&keyword={$vr_data.keyword}">2</a>
+            <a>···</a>
+            <for start="6" end="$vr_data['page_total'] + 1">
+                <a href="prefecture?page={$i}&type={$vr_data.type}&keyword={$vr_data.keyword}" {$vr_data['page'] == $i ? 'class="on"' : ''}>{$i}</a>
+            </for>
+        </if>
+        <else />
+        <for start="1" end="$vr_data['page_total'] + 1">
+            <a href="prefecture?page={$i}&type={$vr_data.type}&keyword={$vr_data.keyword}" {$vr_data['page'] == $i ? 'class="on"' : ''}>{$i}</a>
+        </for>
+    </if>
+    <!-- 下一页和总页数 -->
+    <if condition="$vr_data['page'] != $vr_data['page_total']">
+        <a href="prefecture?page={$vr_data['page'] + 1}&type={$vr_data.type}&keyword={$vr_data.keyword}">下一页</a>
+    </if>
+    <a>共{$vr_data.page_total}页</a>
+</div>
+<!-- 底部信息 -->
+<include file="Public/footer" />
+</body>
+<script>
+    // 收藏
+    $('.hy_ul .title_ span').click(function () {
+        $(this).toggleClass('on');
+        let vr_id = $(this).attr("data-vr-id");
+        $.post("/home/collect/add_or_cancel", {"vr_id" : vr_id}, function (res) {
+            console.log(res);
+        })
+    });
+</script>
+</html>

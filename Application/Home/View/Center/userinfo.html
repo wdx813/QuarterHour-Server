@@ -1,0 +1,94 @@
+<include file="Public/center_header"/>
+<body>
+<div class="dingzhi">
+    <form class="grzl grinter-right" action="/home/center/userinfo_edit" method="post">
+        <h3>基本信息</h3>
+        <div class="zhanghu-box">
+            <div class="dj">
+                <div class="d_top">
+                    <span>头像</span>
+                    <p><img id="headimg" src="/Public/home/headimg/{$userinfo['c_logo']}" alt=""></p>
+                </div>
+                <div class="zhanghuqrqx">
+                    <button type="button" class="layui-btn" id="upload"><i class="layui-icon">&#xe67c;</i>上传图片</button>
+                    <!--<input class="zhanghuqx" type="file" name="headimg" value=""/>-->
+                </div>
+                <div class="zhanghunc">昵称<input type="text" name="c_name" placeholder=" 请输入公司名称" value=" {$userinfo.c_name}"></div>
+                <div class="zhanghudz">
+                    <span style=" float:left;">地址</span>
+                    <textarea name="c_address" id="" cols="30" rows="5">{$userinfo.c_address}</textarea>
+                </div>
+                <div class="zhanghuqm">签名 <input type="text" name="c_slogen" placeholder=" 用一句话描述自己吧。" value="{$userinfo.c_slogen}"></div>
+                <input type="hidden" name="c_logo" value="{$userinfo.c_logo}">
+                <div class="zhanghubc"><input type="submit" value="保存"></div>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="/Public/new/js/jquery-form.js"></script>
+<script src="/Public/home/layui/layui.js"></script>
+<script src="/Public/new/js/sharp_m.js"></script>
+<script>
+    layui.use(['upload', 'layer'], function () {
+        let $ = layui.jquery,
+            upload = layui.upload,
+            layer = layui.layer;
+
+        $(function () {
+            $(".chongzhibox").click(function () {
+                $(this).css("border-color", "#ff443f");
+                $(this).children("img").css("opacity", "1");
+                $(this).css("box-shadow", "2px 2px 10px rgba(0,0,0,0.1)");
+                $(this).siblings().css("border-color", "#ccc");
+                $(this).siblings().children("img").css("opacity", "0");
+                $(this).siblings().css("box-shadow", "2px 2px 10px rgba(0,0,0,0)");
+            });
+            $('.fapiao span').click(function () {
+                $(this).css('border', 'none');
+                $(this).css('background', 'url(images/111.png)');
+                $('.fapiao-box').css('display', 'block');
+            })
+        });
+
+        //图片上传
+        let uploadInst = upload.render({
+            elem: '#upload'
+            ,url: '/home/center/upload'
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#headimg').attr('src', result); //图片链接（base64）
+                });
+            }
+            ,done: function(res){
+                console.log(res);
+                if(res.result_code == 200) {
+                    $("input[name='c_logo']").val(res.file_name);
+                }
+            }
+            ,error: function(){
+
+            }
+        });
+
+        // 提交表单
+        $("input[type='submit']").click(function () {
+            $(".grzl").ajaxSubmit(function (res) {
+                if(res) {
+                    layer.msg(res.result_msg);
+                    if(res.result_code == 200) {
+                        let file = $("input[name='c_logo']").val();
+                        parent.$(".headimg img").attr("src", "/Public/home/headimg/" + file);
+                    }
+                } else {
+                    layer.msg("服务器错误，请稍后重试~");
+                }
+            });
+            return false;
+        });
+    });
+</script>
+
+</body>
+</html>

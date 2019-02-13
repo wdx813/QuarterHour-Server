@@ -1,3 +1,12 @@
+/*子页面样式*/
+.childrenBody{width: 98%; margin:10px 10px 0; overflow-y: auto; }
+.layui-table td, .layui-table th{ word-break:break-all; }
+/*文字选中背景色*/
+::selection{background:#ff5722; color:#fff;}
+/*表格中的操作按钮样式问题*/
+.layui-table .layui-btn, .layui-table .layui-btn+.layui-btn{ margin:2px 5px; }
+.layui-inline{ margin:5px 5px 5px 0; }
+
 /*公共样式*/
 .main_body{ min-width:320px; }
 .layui-elem-quote.title{ padding:10px 15px; margin-bottom:0; }
@@ -46,7 +55,7 @@
 .user-photo p{ display: block; width: 100%; height: 25px; color: #ffffff; text-align: center; font-size: 12px; white-space: nowrap;line-height: 25px; overflow: hidden;}
 /*左侧导航重定义*/
 .layui-nav-item a cite{ padding:0 5px; }
-.layui-side-scroll{ height:auto; }
+
 .layui-nav-tree .layui-nav-child a{ padding-left: 40px; }
 .layui-nav-tree .layui-nav-child a:hover{ background-color:#4E5465; }
 .layui-nav-tree .layui-nav-child dd.layui-this a:hover{ background-color:#009688; }

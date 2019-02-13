@@ -1,0 +1,124 @@
+<include file="Public/center_header"/>
+<body>
+<div class="grinter-right">
+    <h3>充值入口</h3>
+    <p>1、请选择充值类型</p>
+    <div class="chongzhi">
+        <foreach name="recharge_list" item="recharge">
+            <div class="chongzhibox">
+                <img src="/Public/home/images/cz.png" alt="">
+                <h3><span>{$recharge.price}</span>元</h3>
+                <p>{$recharge.expire_date}</p>
+            </div>
+        </foreach>
+        <div class="h5">
+            应付金额：<span>0</span>元
+            <input type="checkbox" name="agree" value="" checked/>
+            <a target="_top" href="/home/index/setting?code=AGREEMENT">《一刻钟服务协议》</a>
+        </div>
+    </div>
+
+    <p>2、请选择支付方式</p>
+    <div class="pay_outer">
+        <div class="box_s">
+            <div class="pay_type">
+                <p><img src="/Public/home/images/wx.png" alt="">使用微信扫码付款</p>
+            </div>
+            <div class="pay_type">
+                <p><img src="/Public/home/images/zfb.png" alt="">使用支付宝扫码付款</p>
+            </div>
+        </div>
+    </div>
+    <div class="fapiao">3、我的订单
+        <div style="border:1px solid #D4D4D4; width:852px; margin-top:15px;border-bottom: none;">
+            <p class="tishi"> 提示：请在订单有效期内申请发票</p>
+            <table class="order_table">
+                <tr>
+                    <th>订单内容</th>
+                    <th>金额</th>
+                    <th>优惠</th>
+                    <th>订单创建日期</th>
+                    <th>操作</th>
+                </tr>
+                <tr>
+                    <td>720yun商业账户开通-12个月</td>
+                    <td>金额：2680</td>
+                    <td>无</td>
+                    <td>2018.10.17</td>
+                    <td><a href="#" class="fp_btn">发票信息</a></td>
+                </tr>
+                <tr>
+                    <td>720yun商业账户开通-12个月</td>
+                    <td>金额：2680</td>
+                    <td>无</td>
+                    <td>2018.10.17</td>
+                    <td><a href="#" class="fp_btn">发票信息</a></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<script src="/Public/new/js/jquery.min.js"></script>
+<script src="/Public/new/js/sharp_m.js"></script>
+<script>
+    let obj_amount = $('.chongzhi .h5 span');
+    let amount = 0,  //订单总金额
+        expire_date = ''; //产品有效期
+
+    // 选择产品套餐
+    $(".chongzhibox").click(function () {
+        $(this).css("border-color", "#ff443f");
+        $(this).children("img").css("opacity", "1");
+        $(this).css("box-shadow", "2px 2px 10px rgba(0,0,0,0.1)");
+        $(this).siblings().css("border-color", "#ccc");
+        $(this).siblings().children("img").css("opacity", "0");
+        $(this).siblings().css("box-shadow", "2px 2px 10px rgba(0,0,0,0)");
+
+        let price = $(this).find('span').text();
+        obj_amount.text(price);
+        amount = price;
+        expire_date = $(this).find('p').text();
+    });
+
+    // 选择支付类型
+    $('.pay_type').click(function () {
+        $(this).css("border-color", "#ff443f");
+        $(this).css("box-shadow", "2px 2px 10px rgba(0,0,0,0.1)");
+        $(this).siblings().css("border-color", "#ccc");
+        $(this).siblings().css("box-shadow", "2px 2px 10px rgba(0,0,0,0)");
+
+        if(amount === 0) {
+            parent.layer.alert('请选择充值套餐', {icon: 0, title: '提示'});
+            return false;
+        }
+
+        let obj_agree = $('input[name="agree"]');
+        let agree = obj_agree.is(':checked');
+        if(!agree) {
+            parent.layer.alert('请同意本网站服务协议', {icon: 0, title: '提示'});
+            return false;
+        }
+
+        let pay_type = $(this).index();
+        parent.layer.confirm('您确定要下单吗？', {icon: 3, title: '提示'}, function (index) {
+
+            console.log(pay_type);
+            console.log(expire_date);
+            let data = {pay_type: pay_type, expire_date: expire_date};
+            $.post('/home/center/create_order', data, function (res) {
+
+            });
+            parent.layer.open({
+                type: 2,
+                content: '/home/center/create_order'
+            });
+
+            parent.layer.close(index);
+        })
+    });
+
+</script>
+
+
+</body>
+</html>

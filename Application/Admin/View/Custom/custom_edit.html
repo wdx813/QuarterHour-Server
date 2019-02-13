@@ -1,0 +1,88 @@
+<include file="Public/header"/>
+<body class="childrenBody">
+<div class="layui-container">
+<form class="layui-form" lay-filter="custom-form" style="width: 60%;">
+    <input type="hidden" name="id" value="">
+    <div class="layui-form-item">
+        <label class="layui-form-label">公司名称</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" name="c_name" value="" readonly>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">联系人</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" name="contacts_name" value="" readonly>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">联系电话</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" name="contacts_mobile" value="" readonly>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">拍摄日期</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" name="shoot_date" value="" readonly>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">拍摄地点</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" name="shoot_site" value="" readonly>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">婚礼风格</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" name="wedding_style" value="" readonly>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">备注</label>
+        <div class="layui-input-block">
+            <textarea name="remark" class="layui-textarea"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit="" lay-filter="check">审核</button>
+        </div>
+    </div>
+</form>
+</div>
+<script type="text/javascript" src="/Public/home/layui/layui.js"></script>
+<script type="text/javascript">
+    layui.use(['layer', 'form'], function () {
+        let layer = parent.layer === undefined ? layui.layer : parent.layer,
+            form = layui.form,
+            $ = layui.jquery;
+        console.log(layui.data('custom'));
+        form.val('custom-form', layui.data('custom'));
+
+        // 提交表单
+        form.on('submit(check)', function (obj) {
+            let data = obj.field;
+            console.log(data);
+            $.post('/admin/custom/check', data, function (res) {
+                if(res && res.result_code === 200) {
+                    layer.msg('审核成功~', {icon: 6, time: 800}, function () {
+                        layer.closeAll("iframe");
+                        //刷新父页面
+                        parent.location.reload();
+                    });
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

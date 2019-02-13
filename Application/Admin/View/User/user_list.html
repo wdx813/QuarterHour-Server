@@ -1,0 +1,106 @@
+<include file="Public/header"/>
+<body class="childrenBody">
+<blockquote class="layui-elem-quote news_search">
+    <div class="layui-inline">
+        <div class="layui-input-inline">
+            <input type="text" name="keyword" value="" placeholder="请输入关键字" class="layui-input search_input" autocomplete="off">
+        </div>
+        <a class="layui-btn search_btn">查询</a>
+    </div>
+    <div class="layui-inline">
+        <a class="layui-btn layui-btn-danger batchDel">批量禁用</a>
+    </div>
+</blockquote>
+<!-- 数据表格 -->
+<table class="layui-hide" id="user_list" lay-filter="user_table_filter"></table>
+
+<script type="text/javascript" src="/Public/home/layui/layui.js"></script>
+<!-- 数据表格的工具 -->
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="detail">查看</a>
+    <!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">禁用</a>-->
+</script>
+<!-- 数据表格中是否禁用栏 -->
+<script type="text/html" id="switchTpl">
+    <input type="checkbox" name="del_state" value="{{d.id}}" lay-skin="switch" lay-text="是|否" lay-filter="forbidFilter" {{ d.del_state == 1 ? 'checked' : '' }}>
+</script>
+<script>
+    layui.use(['layer', 'table', 'jquery', 'form'], function () {
+        let layer = parent.layer === undefined ? layui.layer : parent.layer,
+            table = layui.table,
+            form = layui.form,
+            $ = layui.jquery;
+
+        // 加载页面数据
+        let tableIns = table.render({
+            id: 'user_table',
+            elem: "#user_list",
+            url: "/admin/user/list",
+            cols: [[
+                {type: 'checkbox'}
+                , {field: 'qh_code', title: 'ID'}
+                , {field: 'phone', title: '手机号'}
+                , {field: 'c_name', title: '公司名称'}
+                , {field: 'c_owner_name', title: '负责人姓名'}
+                , {field: 'c_owner_phone', title: '负责人电话'}
+                , {field: 'add_time', title: '注册时间', sort: true}
+                , {field: 'end_time', title: 'VIP到期时间', sort: true}
+                /*, {
+                    field: 'del_state', title: '状态', templet: function (d) {
+                            return d.del_state == 0 ?
+                                '<span style="background-color: #009688; color: #fff; padding: 5px; border-radius: 3px;">正常</span>' :
+                                '<span style="background-color: #FF5722; color: #fff; padding: 5px; border-radius: 3px;">禁用</span>';
+                    }
+                }*/
+                , {field: 'del_state', title: '是否禁用', templet: '#switchTpl'}
+                /*, {title: '操作', toolbar: '#barDemo'}*/
+            ]],
+            page: true,
+            toolbar: true
+        });
+
+        // 查询
+        $('.search_btn').click(function () {
+            let keyword = $(".search_input").val();
+
+            tableIns.reload({
+                where: {'keyword' : keyword},
+            });
+        });
+
+        // 禁用
+        form.on('switch(forbidFilter)', function (obj) {
+            let user_id = this.value,
+                del_state = obj.elem.checked == true ? 1 : 0;
+            $.post('/admin/user/forbid', {'del_state':del_state, 'user_id':user_id});
+        });
+
+        // 批量禁用
+        $('.batchDel').on('click', function () {
+            let checkStatus = table.checkStatus('user_table');
+            if(checkStatus.data.length > 0) {
+                $.post('/admin/user/batch_forbid', {'users':checkStatus.data}, function () {
+                    tableIns.reload();
+                });
+            }
+        });
+
+        //监听行工具事件
+        table.on('tool(user_table_filter)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            let data = obj.data //获得当前行数据
+                , layEvent = obj.event; //获得 lay-event 对应的值
+            console.log(data);
+            if (layEvent === 'detail') {
+                layer.msg('查看操作');
+            } else if (layEvent === 'del') {
+                layer.confirm('您确定要禁用该用户吗？', {icon: 3, title: '提示'}, function (index) {
+                    layer.close(index);
+                    //向服务端发送禁用指令
+
+                });
+            }
+        });
+    });
+</script>
+</body>
+</html>

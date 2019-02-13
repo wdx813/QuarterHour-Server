@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>首页</title>
+    <link href="css/style.css" rel="stylesheet">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+  <div class="dingzhi">
+    <div class="grinter container">
+      <form class="grinter-right">
+        <h3>充值入口</h3>
+        <p>1、请选择充值类型</p>
+        <div class="chongzhi">
+          <div class="chongzhibox">
+            <img src="images/cz.png" alt="">
+            <h3><span>1200</span>元</h3>
+            <p>6个月</p>
+          </div>
+          <div class="chongzhibox">
+            <img src="images/cz.png" alt="">
+            <h3><span>1250</span>元</h3>
+            <p>6个月</p>
+          </div>
+          <div class="chongzhibox" style="margin:0">
+            <img src="images/cz.png" alt="">
+            <h3><span>1500</span>元</h3>
+            <p>6个月</p>
+          </div>
+          <div class="h5">应付金额：<span>1500</span>元<input type="checkbox" name="vehicle" value="Car" checked="checked" />《一刻钟服务协议》</div>
+        </div>
+        <p>2、请选择支付方式</p>
+        <div class="pay_outer">
+          <div class="box_s">
+            <div class="wx">
+              <img src="images/ewm.png" alt="">
+              <p><img src="images/wx.png" alt="">使用微信扫码付款</p>
+            </div>
+            <div class="zfb">
+              <img src="images/ewm.png" alt="">
+              <p><img src="images/zfb.png" alt="">使用支付宝扫码付款</p>
+            </div>
+          </div>
+          <div class="box_s">
+            <div class="wx">
+              <img src="images/ewm.png" alt="">
+              <p><img src="images/wx.png" alt="">使用微信扫码付款</p>
+            </div>
+            <div class="zfb">
+              <img src="images/ewm.png" alt="">
+              <p><img src="images/zfb.png" alt="">使用支付宝扫码付款</p>
+            </div>
+          </div>
+          <div class="box_s">
+            <div class="wx">
+              <img src="images/ewm.png" alt="">
+              <p><img src="images/wx.png" alt="">使用微信扫码付款</p>
+            </div>
+            <div class="zfb">
+              <img src="images/ewm.png" alt="">
+              <p><img src="images/zfb.png" alt="">使用支付宝扫码付款</p>
+            </div>
+          </div>
+        </div>
+        <div class="fapiao"><span></span>开发票</div>
+        <div class="fapiao-box">
+          <span>姓名</span><input type="text" placeholder="请填写真实姓名">
+          <span>姓名</span><input type="text" placeholder="请填写真实姓名">
+          <span>姓名</span><input type="text" placeholder="请填写真实姓名">
+          <span>姓名</span><input type="text" placeholder="请填写真实姓名">
+          <span>姓名</span><input type="text" placeholder="请填写真实姓名">
+          <input class="fapiao-btn" type="button" value="提交">
+        </div>
+      </form>
+    </div>
+  </div>
+  <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="js/sharp_m.js"></script>
+  <script>
+
+      $(function(){
+          $(".chongzhibox").click(function(){
+            $(this).css("border-color","#ff443f");
+            $(this).children("img").css("opacity","1");
+            $(this).css("box-shadow","2px 2px 10px rgba(0,0,0,0.1)");
+            $(this).siblings().css("border-color","#ccc");
+            $(this).siblings().children("img").css("opacity","0");
+            $(this).siblings().css("box-shadow","2px 2px 10px rgba(0,0,0,0)");
+            var n=$(this).index();
+            var price=$(this).find('span').text();
+            $('.chongzhi .h5 span').text(price);
+            $('.pay_outer .box_s').eq(n).fadeIn().siblings('.box_s').hide();
+          })
+          $('.fapiao span').click(function(){
+            $(this).css('border','none');
+            $(this).css('background','url(images/111.png)');
+            $('.fapiao-box').css('display','block');
+          })
+      });
+  </script>
+
+  </body>
+  </html>

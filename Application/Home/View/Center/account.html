@@ -1,0 +1,51 @@
+<include file="Public/center_header"/>
+<body>
+<div class="dingzhi">
+    <div class="grinter container">
+        <form class="grinter-right">
+            <h3>账户安全</h3>
+            <div class="zhanghu-box">
+                <div class="dj">安全等级<p><span></span></p></div>
+                <div class="zhanghu-txt">
+                    <img src="/Public/home/images/jh.png" alt="">
+                    <div class="zhanghu-all">
+                        <h3>手机绑定<span>已绑定</span></h3>
+                        <p>账户资金变动，修改账户信息时需要的手机号</p>
+                    </div>
+                    <a href="#" id="yzm_sj">修改手机号码</a>
+                </div>
+                <div class="zhanghu-txt">
+                    <img src="/Public/home/images/jh.png" alt="">
+                    <div class="zhanghu-all">
+                        <h3>密码设置<span>已设置</span></h3>
+                        <p>设置密码，将极大提升您的账户安全性</p>
+                    </div>
+                    <a href="" id="yzm_mm">修改密码</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="/Public/new/js/jquery.min.js"></script>
+<script src="/Public/new/js/sharp_m.js"></script>
+<script>
+
+    $(function () {
+        $(".chongzhibox").click(function () {
+            $(this).css("border-color", "#ff443f");
+            $(this).children("img").css("opacity", "1");
+            $(this).css("box-shadow", "2px 2px 10px rgba(0,0,0,0.1)");
+            $(this).siblings().css("border-color", "#ccc");
+            $(this).siblings().children("img").css("opacity", "0");
+            $(this).siblings().css("box-shadow", "2px 2px 10px rgba(0,0,0,0)");
+        });
+        $('.fapiao span').click(function () {
+            $(this).css('border', 'none');
+            $(this).css('background', 'url(images/111.png)');
+            $('.fapiao-box').css('display', 'block');
+        })
+    });
+</script>
+
+</body>
+</html>
