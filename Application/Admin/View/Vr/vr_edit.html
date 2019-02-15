@@ -45,6 +45,14 @@
                 <input type="text" name="max_price" value="{$vr.max_price}" placeholder="￥" autocomplete="off" class="layui-input" lay-verify="required|number">
             </div>
         </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">浏览量</label>
+            <div class="layui-input-inline">
+                <input type="text" class="layui-input" name="view_count" value="{$vr.view_count}" lay-verify="required" placeholder="请初始化浏览量">
+            </div>
+        </div>
         <div class="layui-inline">
             <label class="layui-form-label">人气值</label>
             <div class="layui-input-inline">
@@ -73,7 +81,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">作品清单</label>
         <div class="layui-input-block">
-            <textarea class="layui-textarea layui-hide" name="quote" lay-verify="content" id="quote"></textarea>
+            <textarea class="layui-textarea layui-hide" name="quote" lay-verify="content" id="quote">{$vr.quote}</textarea>
         </div>
     </div>
     <div class="layui-form-item">

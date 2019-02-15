@@ -8,8 +8,6 @@
 
 namespace Home\Controller;
 
-use Think\Page;
-
 class CaseController extends BaseUserController
 {
     public function index()
@@ -78,7 +76,12 @@ class CaseController extends BaseUserController
         return $result;
     }
 
-
-
-
+    /**
+     * 增加浏览量
+     */
+    public function incre_view_count()
+    {
+        $vr_id = I('post.vr_id');
+        M('Vr')->where(array('id' => $vr_id))->setInc('view_count');
+    }
 }

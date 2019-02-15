@@ -151,6 +151,7 @@ class CenterController extends BaseUserController
     {
         $params                   = I('post.');
         $params['my_description'] = trim($params['my_description']);
+        $params['update_time'] = time();
 
         $condition = array(
             'user_id' => $this->user_info['id'],

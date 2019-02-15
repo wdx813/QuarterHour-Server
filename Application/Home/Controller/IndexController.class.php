@@ -166,6 +166,16 @@ class IndexController extends Controller
         $this->ajaxReturn($res);
     }
 
+    /**
+     * 用户退出
+     */
+    public function logout()
+    {
+        session('current_user_id', null);
+        session('current_user_cname', null);
+        $this->redirect('/home/index');
+    }
+
 
     /**
      * 获取配置内容
@@ -177,10 +187,5 @@ class IndexController extends Controller
         $content = htmlspecialchars_decode($about_us['content']);
         $this->assign('content', $content);*/
         $this->display("Public:$code");
-    }
-
-    public function test()
-    {
-        qrcode('https://www.baidu.com', 6);
     }
 }

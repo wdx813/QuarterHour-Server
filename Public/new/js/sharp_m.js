@@ -95,7 +95,10 @@ let sms_send = function (data) {
 let fn_, sn_, order_, str_;
 // 收藏  点击编辑
 $('.collection_ul .edi').click(function () {
-    $(this).addClass('on');
+    // 隐藏按钮
+    $(this).parents('li').find('.del').hide();
+    $(this).hide();
+
     $(this).siblings('.t_btn').addClass('on');
     $(this).parents('li').find('.ss').attr('disabled', false).addClass('ee');
     fn_ = $(this).parents('li').find('.fn').val();
@@ -105,6 +108,10 @@ $('.collection_ul .edi').click(function () {
 });
 // 收藏  点击保存
 $('.collection_ul .t_btn em.yes').click(function () {
+    // 显示按钮
+    $(this).parents('li').find('.del').show();
+    $(this).parents('li').find('.edi').show();
+
     // 最小价格
     let fn = $(this).parents('li').find('.fn').val().trim();
     // 最大价格
@@ -148,6 +155,22 @@ $('.collection_ul .t_btn em.no').click(function () {
     $(this).parent().removeClass('on');
     $(this).parent().siblings('.edi').removeClass('on');
     $(this).parents('li').find('.ss').attr('disabled', 'disabled').removeClass('ee');
+
+    // 显示按钮
+    $(this).parents('li').find('.del').show();
+    $(this).parents('li').find('.edi').show();
+});
+
+// 取消收藏
+$('.collection_ul .del').click(function () {
+    let vr_id = $(this).attr("data-vr-id"),
+        that = this;
+    $.post("/home/collect/add_or_cancel", {"vr_id" : vr_id}, function (res) {
+        console.log(res);
+        if(res && res.result_code === 200) {
+            $(that).parents('li').remove();
+        }
+    })
 });
 
 // 切换主题

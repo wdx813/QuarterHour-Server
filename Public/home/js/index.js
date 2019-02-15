@@ -17,11 +17,15 @@ function vip_verify() {
 // VR详情
 function vr_detail(vr_id) {
     if (!vip_verify()) return false;
+    // 修改浏览量
+    $.post('/home/case/incre_view_count', {vr_id: vr_id});
     window.open('/home/case/get_vr_info?vr_id=' + vr_id);
 }
 
 function collect_detail(vr_id) {
     if (!vip_verify()) return false;
+    // 修改浏览量
+    $.post('/home/case/incre_view_count', {vr_id: vr_id});
     window.open('/home/collect/detail?vr_id=' + vr_id);
 }
 
@@ -71,4 +75,4 @@ document.oncontextmenu = function (event){
     }catch (e){
         return false;
     }
-}
+};

@@ -1856,6 +1856,7 @@ a:hover,a:active,a:focus{text-decoration:none;}
 	color: #ff443f;
 	display: block;
 	position: absolute;
+    margin-right: 100px;
 	line-height: 28px;
 	right: 0;
 	top: 5px;
@@ -1864,6 +1865,20 @@ a:hover,a:active,a:focus{text-decoration:none;}
 	cursor: pointer;
 	transition:all 0.3s;
 }
+.collection_ul .del{
+	font-size: 14px;
+	color: #aaaaaa;
+	display: block;
+    position: absolute;
+	line-height: 28px;
+	right: 0;
+	top: 5px;
+	padding-left: 22px;
+	background: url(../img/cancel.png) no-repeat left center;
+	cursor: pointer;
+	transition:all 0.3s;
+}
+
 .collection_ul .edi.on{
 	right: -55px;
 }
@@ -2023,13 +2038,13 @@ textarea:disabled,input:disabled{
 }
 .snav li{
 	float: left;
-	margin-left: 35px;
+	margin-left: 25px;
 }
 .snav .personal{
 	display: block;
 	border:1px solid #fff;
 	border-radius: 20px;
-	padding: 0 20px;
+	padding: 0 10px;
 }
 @media (max-width: 992px) {
 	.header .logo_box{
