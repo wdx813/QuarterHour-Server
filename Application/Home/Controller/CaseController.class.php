@@ -15,6 +15,10 @@ class CaseController extends BaseUserController
         // 获取VR列表
         $vr_data = $this->get_vr_list();
         $this->assign('vr_data', $vr_data);
+
+        $vr_type_list = M('Vr_type')->select();
+        $this->assign('vr_type_list', $vr_type_list);
+
         $this->display('case');
     }
 
@@ -49,8 +53,10 @@ class CaseController extends BaseUserController
         $limit = 8;
 
         $condition = array('status' => 0);
+        $vr_type_info = array();
         if ($type && $type != -1) {
             $condition['type_id'] = $type;
+            $vr_type_info = M('Vr_type')->find($type);
         }
         if($tag && $tag != -1) {
             $condition['tag'] = $tag;
@@ -71,7 +77,8 @@ class CaseController extends BaseUserController
             'page'       => $page,
             'page_total' => $page_total,
             'tag'        => $tag,
-            'type'       => $type
+            'type'       => $type,
+            'type_info'  => $vr_type_info
         );
         return $result;
     }

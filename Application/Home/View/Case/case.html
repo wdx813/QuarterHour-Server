@@ -26,22 +26,14 @@
 </div>
 <div class="case_list container">
     <div class="title">
-        <switch name="vr_data.type">
-            <case value="1">
-                <em>喜庆典雅</em><span><img src="/Public/new/img/w2.png" alt=""></span>
-            </case>
-            <case value="2">
-                <em>欧式梦幻</em><span><img src="/Public/new/img/w3.png" alt=""></span>
-            </case>
-            <case value="3">
-                <em>唯美浪漫</em><span><img src="/Public/new/img/w4.png" alt=""></span>
-            </case>
-            <case value="4">
-                <em>森系清新</em><span><img src="/Public/new/img/w5.png" alt=""></span>
-            </case>
-            <default />
+        <empty name="vr_data.type">
             <em>全部</em><span><img src="/Public/new/img/w1.png" alt=""></span>
-        </switch>
+        </empty>
+        <if condition="$vr_data['type'] == -1">
+            <em>全部</em><span><img src="/Public/new/img/w1.png" alt=""></span>
+            <else />
+            <em>{$vr_data.type_info.type_name}</em><span><img src="/Public/new/img/w{$vr_data['type_info']['id'] + 1}.png" alt=""></span>
+        </if>
     </div>
     <div class="case_nav clearfix">
         <ul class="left">
@@ -50,12 +42,23 @@
             <li {$vr_data['tag'] == 2 ? 'class="on"' : ''}><a href="case?tag=2&type={$vr_data.type}">人气</a></li>
             <li {$vr_data['tag'] == 3 ? 'class="on"' : ''}><a href="case?tag=3&type={$vr_data.type}">新上</a></li>
         </ul>
-        <ul class="right">
+        <!--<ul class="right">
             <li {$vr_data['type'] == -1 ? 'class="on"' : ''} data-color="#333" data-img="/Public/new/img/w1.png"><a href="case?type=-1&tag={$vr_data.tag}">全部</a></li>
-            <li {$vr_data['type'] == 1 ? 'class="on"' : ''} data-color="#f28479" data-img="/Public/new/img/w2.png"><a href="case?type=1&tag={$vr_data.tag}">喜庆典雅</a></li>
+            <li {$vr_data['type'] == 1 ? 'class="on"' : ''} ><a href="case?type=1&tag={$vr_data.tag}">喜庆典雅</a></li>
             <li {$vr_data['type'] == 2 ? 'class="on"' : ''} data-color="#82c9e8" data-img="/Public/new/img/w3.png"><a href="case?type=2&tag={$vr_data.tag}">欧式梦幻</a></li>
             <li {$vr_data['type'] == 3 ? 'class="on"' : ''} data-color="#dd90a9" data-img="/Public/new/img/w4.png"><a href="case?type=3&tag={$vr_data.tag}">唯美浪漫</a></li>
             <li {$vr_data['type'] == 4 ? 'class="on"' : ''} data-color="#86d796" data-img="/Public/new/img/w5.png"><a href="case?type=4&tag={$vr_data.tag}">森系清新</a></li>
+        </ul>-->
+        <ul class="right">
+            <empty name="vr_data['type']">
+                <li class="on" data-color="#333" data-img="/Public/new/img/w1.png"><a href="case?type=-1&tag={$vr_data.tag}">全部</a></li>
+                <else/>
+                <li {$vr_data['type'] == -1 ? 'class="on"' : ''} data-color="#333" data-img="/Public/new/img/w1.png"><a href="case?type=-1&tag={$vr_data.tag}">全部</a></li>
+            </empty>
+
+            <foreach name="vr_type_list" item="vr_type">
+                <li {$vr_data['type'] == $vr_type['id'] ? 'class="on"' : ''}><a href="case?type={$vr_type.id}&tag={$vr_data.tag}">{$vr_type.type_name}</a></li>
+            </foreach>
         </ul>
     </div>
     <ul class="main_list clearfix">
