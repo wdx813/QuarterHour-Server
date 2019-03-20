@@ -1,0 +1,152 @@
+<include file="Public/header"/>
+<body class="childrenBody">
+<blockquote class="layui-elem-quote news_search">
+    <div class="layui-inline">
+        <div class="layui-input-inline">
+            <input type="text" name="keyword" value="" placeholder="请输入订单号" class="layui-input search_input" autocomplete="off">
+        </div>
+        <a class="layui-btn search_btn">查询</a>
+    </div>
+</blockquote>
+<!-- 数据表格 -->
+<table class="layui-hide" id="order_list" lay-filter="table_filter"></table>
+
+<script type="text/javascript" src="/Public/home/layui/layui.js"></script>
+<!-- 数据表格的工具 -->
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="detail">查看</a>
+    <!--<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>-->
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<!-- 数据表格中是否禁用栏 -->
+<script type="text/html" id="switchTpl">
+    <input type="checkbox" name="del_state" value="{{d.id}}" lay-skin="switch" lay-text="是|否" lay-filter="forbidFilter" {{ d.del_state == 1 ? 'checked' : '' }}>
+</script>
+<script>
+    layui.use(['layer', 'table', 'jquery'], function () {
+        let layer = parent.layer === undefined ? layui.layer : parent.layer,
+            table = layui.table,
+            $ = layui.jquery;
+
+        // 加载页面数据
+        let tableIns = table.render({
+            id: 'order_table',
+            elem: "#order_list",
+            url: "/admin/order/list",
+            cols: [[
+                {type: 'checkbox'}
+                , {field: 'order_sn', width: 150, title: '订单号'}
+                , {field: 'phone', width: 120, title: '用户账号'}
+                , {field: 'order_content', title: '订单内容'}
+                , {field: 'order_state', width: 90, title: '订单状态', templet: function (d) {
+                        let order_state = '';
+                        switch (parseInt(d.order_state)) {
+                            case 0:
+                                order_state = '<span style="background-color: #F35A5D; color: #fff; padding: 5px; border-radius: 3px;">已取消</span>';
+                                break;
+                            case 10:
+                                order_state = '<span style="background-color: #FFA652; color: #fff; padding: 5px; border-radius: 3px;">未支付</span>';
+                                break;
+                            case 20:
+                                order_state = '<span style="background-color: #61A5F0; color: #fff; padding: 5px; border-radius: 3px;">已完成</span>';
+                                break;
+                        }
+                        return order_state;
+                    }}
+                , {field: 'pay_type', width: 90, title: '支付类型', templet: function (d) {
+                        return d.pay_type === '1' ? '微信支付' : '支付宝';
+                    }}
+                , {field: 'add_time', title: '下单时间', sort: true}
+                , {field: 'pay_time', title: '支付时间', sort: true}
+                , {title: '操作', toolbar: '#barDemo'}
+            ]],
+            page: true
+        });
+
+        // 查询
+        $('.search_btn').click(function () {
+            let keyword = $(".search_input").val();
+            tableIns.reload({
+                where: {'keyword' : keyword},
+            });
+        });
+
+        //监听行工具事件
+        table.on('tool(table_filter)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            let data = obj.data //获得当前行数据
+                , layEvent = obj.event; //获得 lay-event 对应的值
+            if (layEvent === 'detail') {
+                for(let k in data) {
+                    if(k === 'pay_type') {
+                        let pay_type = data[k] === '1' ? '微信支付' : '支付宝';
+                        layui.data('order', {key: k, value: pay_type});
+                    } else if(k === 'order_state') {
+                        let order_state = '';
+                        if(data[k] === '0') {
+                            order_state = '已取消';
+                        } else if(data[k] === '10') {
+                            order_state = '未支付';
+                        } else {
+                            order_state = '已完成';
+                        }
+                        layui.data('order', {key: k, value: order_state});
+                    } else {
+                        layui.data('order', {key: k, value: data[k]});
+                    }
+                }
+                let index = layer.open({
+                    skin: 'layui-layer-molv',
+                    title : "订单详情",
+                    type : 2,
+                    content : "/admin/order/order_info",
+                    success : function(layero, index){
+                        setTimeout(function(){
+                            layer.tips('点击此处返回列表', '.layui-layer-setwin .layui-layer-close', {
+                                tips: 3
+                            });
+                        },500)
+                    },
+                });
+                //改变窗口大小时，重置弹窗的高度，防止超出可视区域（如F12调出debug的操作）
+                $(window).resize(function(){
+                    layer.full(index);
+                });
+                layer.full(index);
+            } else if (layEvent === 'del') {
+                layer.confirm('您确定要删除该订单吗？', {icon: 3, title: '提示'}, function (index) {
+                    layer.close(index);
+                    //向服务端发送禁用指令
+                    $.post('/admin/order/delete', {order_id: data.id}, function (res) {
+                        if(res && res.result_code === 200) {
+                            obj.del();
+                            layer.msg('删除成功');
+                        } else {
+                            layer.msg('删除失败');
+                        }
+                    });
+                });
+            } else if (layEvent === 'edit') {
+                let index = layer.open({
+                    skin: 'layui-layer-molv',
+                    title : "编辑作品",
+                    type : 2,
+                    content : "/admin/vr/edit?vr_id=" + data.id,
+                    success : function(layero, index){
+                        setTimeout(function(){
+                            layer.tips('点击此处返回列表', '.layui-layer-setwin .layui-layer-close', {
+                                tips: 3
+                            });
+                        },500)
+                    },
+                });
+                //改变窗口大小时，重置弹窗的高度，防止超出可视区域（如F12调出debug的操作）
+                $(window).resize(function(){
+                    layer.full(index);
+                });
+                layer.full(index);
+            }
+        });
+    });
+</script>
+</body>
+</html>

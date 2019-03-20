@@ -1260,7 +1260,7 @@ a:hover,a:active,a:focus{text-decoration:none;}
 	float: none !important;
 }
 
-/*·¢Æ±*/
+
 
 .xiugai-fp{
 	width: 900px;
@@ -1272,10 +1272,8 @@ a:hover,a:active,a:focus{text-decoration:none;}
 	left: 0;
 	right: 0;
 	margin: 0 auto;
-	top: 60px;
-	
-	
-}/**/
+	top: 30px;
+}
 
 .xiugai-fp .title{
 	height:54px;
@@ -1285,7 +1283,6 @@ a:hover,a:active,a:focus{text-decoration:none;}
 	background-color:#ECECEC;
 	border-bottom:1px solid #C5C5C5;
 	font-weight: 550;
-	
 }
 
 .xiugai-fp .monery{
@@ -1332,14 +1329,14 @@ a:hover,a:active,a:focus{text-decoration:none;}
 }
 .xiugai-fp .bitian{
 	margin-left:20px;
-	margin-top:30px;
+	margin-top:10px;
 }
 
 .xiugai-fp .content{
-	margin:5px 20px;
+	margin:3px 20px;
 	border: 1px solid #C5C5C5;
 	background-color:#f7f7f7;
-	padding:15px 20px;
+	padding: 0px 20px;
 }
 .xiugai-fp .content div{
 	margin:20px 10px;

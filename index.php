@@ -22,10 +22,19 @@ define('BASE_PATH',str_replace('\\','/',realpath(dirname(__FILE__).'/'))."/");
 define('APP_PATH','./Application/');
 
 // 定义配置文件
-define('APP_STATUS', 'config_dev');
+define('APP_STATUS', 'config');
 
 // 定义绑定模块
 //define('BIND_MODULE', 'Admin');
+
+/** 支付类型 */
+define('PAY_BY_WX', 1); // 微信
+define('PAY_BY_ALI', 2); // 支付宝
+
+/** 订单状态 */
+define('ORDER_STATE_CANCEL', 0); // 已取消
+define('ORDER_STATE_NO_PAY', 10); // 未支付
+define('ORDER_STATE_SUCCESS', 20);// 支付完成
 
 // 引入ThinkPHP入口文件
 require './ThinkPHP/ThinkPHP.php';

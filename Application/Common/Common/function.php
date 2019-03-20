@@ -75,7 +75,38 @@ function makeOrderSn($pay_id) {
  * @param  string  $url  url连接
  * @param  integer $size 尺寸 纯数字
  */
-function qrcode($url,$size=4){
+function qrcode($url,$size=8){
     Vendor('Phpqrcode.phpqrcode');
     QRcode::png($url,false,QR_ECLEVEL_L,$size,2,false);
+}
+
+/**
+ * 数组转XML
+ *
+ * @param array $data
+ *
+ * @return string
+ */
+function arrayToXml(array $data) {
+    $xml = "<xml>";
+    foreach ($data as $k => $v) {
+        if (is_numeric($v)) {
+            $xml .= "<{$k}>{$v}</{$k}>";
+        } else {
+            $xml .= "<{$k}><![CDATA[{$v}]]></{$k}>";
+        }
+    }
+    $xml .= "</xml>";
+    return $xml;
+}
+
+/**
+ * XMl转数组
+ *
+ * @param $xml
+ *
+ * @return mixed
+ */
+function xmlToArray($xml) {
+    return json_decode(json_encode(simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA)), true);
 }

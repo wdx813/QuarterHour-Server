@@ -1,0 +1,86 @@
+<include file="Public/header"/>
+<body class="childrenBody">
+<div class="layui-container">
+<form class="layui-form" lay-filter="form-filter" style="width: 60%;">
+    <input type="hidden" name="id" value="">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">用户账号</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" name="phone" value="" readonly>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">订单号</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" name="order_sn" value="" readonly>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">商户订单号</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" name="pay_sn" value="" readonly>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">交易单号</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" name="trade_no" value="" readonly>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">支付类型</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" name="pay_type" value="" readonly>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">订单状态</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" name="order_state" value="" readonly>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">订单金额</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" name="order_amount" value="" readonly>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">订单内容</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" name="order_content" value="" readonly>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">下单时间</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" name="add_time" value="" readonly>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">支付时间</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" name="pay_time" value="" readonly>
+            </div>
+        </div>
+    </div>
+</form>
+</div>
+<script type="text/javascript" src="/Public/home/layui/layui.js"></script>
+<script type="text/javascript">
+    layui.use(['form'], function () {
+        let form = layui.form;
+        form.val('form-filter', layui.data('order'));
+    });
+</script>
+</body>
+</html>

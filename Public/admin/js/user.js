@@ -5,7 +5,7 @@ var $;
 layui.config({
 	base : "/Public/admin/js/"
 }).use(['form','layer','upload','laydate'],function(){
-	form = layui.form();
+	form = layui.form;
 	var layer = parent.layer === undefined ? layui.layer : parent.layer;
 		$ = layui.jquery;
 		$form = $('form');
@@ -147,7 +147,7 @@ layui.config({
     	return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
     })
 
-})
+});
 
 //加载省数据
 function loadProvince() {

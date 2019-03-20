@@ -1,0 +1,134 @@
+<include file="Public/header"/>
+<body class="childrenBody">
+<div class="layui-container">
+<form class="layui-form" lay-filter="form-filter" >
+    <input type="hidden" name="id" value="">
+    <blockquote class="layui-elem-quote">发票信息</blockquote>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">订单号</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" name="order_sn" value="" readonly>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">订单内容</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" name="order_content" value="" readonly>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">发票名称</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" name="inv_title" value="" readonly>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">纳税人识别号</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" name="inv_code" value="" readonly>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">发票金额</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" name="inv_amount" value="" readonly>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">发票类型</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" name="inv_type" value="" readonly>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">收票邮箱</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" name="inv_rec_email" value="" readonly>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">收票电话</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" name="inv_rec_phone" value="" readonly>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">申请时间</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" name="add_time" value="" readonly>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">开票时间</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" name="end_time" value="" readonly>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">发票状态</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" name="inv_state" value="" readonly>
+            </div>
+        </div>
+    </div>
+
+    <blockquote class="layui-elem-quote">公司信息</blockquote>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">公司名称</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" name="inv_com_name" value="" readonly>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">公司电话</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" name="inv_com_phone" value="" readonly>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">公司账户</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" name="inv_com_account" value="" readonly>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">公司开户行</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" name="inv_com_bank" value="" readonly>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">公司地址</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" name="inv_com_address" value="" readonly>
+            </div>
+        </div>
+    </div>
+
+</form>
+</div>
+<script type="text/javascript" src="/Public/home/layui/layui.js"></script>
+<script type="text/javascript">
+    layui.use(['form'], function () {
+        let form = layui.form;
+        form.val('form-filter', layui.data('invoice'));
+    });
+</script>
+</body>
+</html>

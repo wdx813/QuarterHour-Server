@@ -8,12 +8,10 @@
 
 namespace Home\Controller;
 
+use Think\Log;
 use Think\Upload;
 use Common\Common\Sms;
-
-/**===支付类型===*/
-define('PAY_BY_WX', 1);
-define('PAY_BY_ALI', 2);
+use Common\Common\WxPay;
 
 class CenterController extends BaseUserController
 {
@@ -256,15 +254,6 @@ class CenterController extends BaseUserController
         $this->ajaxReturn($res);
     }
 
-
-    /**
-     * 充值
-     */
-    public function recharge_show()
-    {
-        $this->display('recharge');
-    }
-
     /**
      * 礼券兑换
      */
@@ -400,10 +389,11 @@ class CenterController extends BaseUserController
     }
 
     /**
-     * 充值套餐
+     * 充值
      */
     public function recharge()
     {
+        // 获取产品套餐
         $recharge_list = M('Recharge')->where(array('status' => 0))->select();
         if(!empty($recharge_list)) {
             foreach ($recharge_list as &$recharge) {
@@ -426,7 +416,19 @@ class CenterController extends BaseUserController
                 }
             }
         }
+
+        // 获取订单列表
+        $order_condition = array('del_state' => 0, 'user_id' => $this->user_info['id'], 'order_state' => ORDER_STATE_SUCCESS);
+        $order_list = M('Order')->where($order_condition)->select();
+        if(!empty($order_list)) {
+            foreach ($order_list as &$order) {
+                $order['add_time'] = date('Y-m-d h:i:s', $order['add_time']);
+            }
+        }
+
+        $this->assign('order_list', $order_list);
         $this->assign('recharge_list', $recharge_list);
+
         $this->display('recharge');
     }
 
@@ -435,10 +437,160 @@ class CenterController extends BaseUserController
      */
     public function create_order()
     {
-        $data = I('post.');
-        $pay_sn = makePaySn($this->user_info['id']);
-        $data['order_sn'] = makeOrderSn($pay_sn);
-        qrcode('https://www.baidu.com');
+        try {
+            // 支付产品ID
+            $recharge_id   = I('get.recharge_id');
+            // 支付类型 1：微信 2：支付宝
+            $pay_type      = I('get.pay_type');
+            // 支付金额
+            $amount        = I('get.amount');
+            // 支付内容
+            $order_content = '一刻钟充值-' . I('get.expire_date');
+            // 支付单号
+            $pay_sn        = makePaySn($this->user_info['id']);
+
+            switch ($pay_type) {
+                case PAY_BY_WX: // 微信
+                    // 构建微信支付请求参数
+                    $pay_data                     = array();
+                    $pay_data['appid']            = C('WX_PAY.APP_ID');
+                    $pay_data['mch_id']           = C('WX_PAY.MCH_ID');
+                    $pay_data['nonce_str']        = md5(uniqid(mt_rand(), true));
+                    $pay_data['body']             = $order_content;
+                    $pay_data['out_trade_no']     = $pay_sn;
+                    $pay_data['total_fee']        = $amount * 100;
+                    $pay_data['spbill_create_ip'] = $_SERVER['REMOTE_ADDR'];
+                    $pay_data['notify_url']       = C('WX_PAY.NOTIFY_URL');
+                    $pay_data['trade_type']       = 'NATIVE';
+                    $sign                         = WxPay::sign($pay_data);
+                    $pay_data['sign']             = $sign;
+
+                    // 请求微信下单并处理结果
+                    $pay_result = WxPay::create_order($pay_data);
+                    if ($pay_result['return_code'] != 'SUCCESS') {
+                        $res = array(
+                            'result_code' => 400,
+                            'result_msg'  => $pay_result['return_msg']
+                        );
+                        Log::write('下单失败【' . $pay_result['return_msg'] . '】');
+                        $this->ajaxReturn($res);
+                    }
+                    if ($pay_result['result_code'] != 'SUCCESS') {
+                        $res = array(
+                            'result_code' => 400,
+                            'result_msg'  => $pay_result['result_msg']
+                        );
+                        Log::write('下单失败【' . $pay_result['err_code'] . '】【' . $pay_result['err_code_des'] . '】');
+                        $this->ajaxReturn($res);
+                    }
+
+                    // 构建订单数据并入库
+                    $save_res = $this->add_order($recharge_id, $pay_sn, PAY_BY_WX, $order_content, $amount);
+                    if (!$save_res) {
+                        $res = array(
+                            'result_code' => 400,
+                            'result_msg'  => '订单数据保存失败'
+                        );
+                        $this->ajaxReturn($res);
+                    }
+                    // 返回支付二维码
+                    qrcode($pay_result['code_url']);
+
+                    break;
+
+                case PAY_BY_ALI: // 支付宝
+                    // 引入支付核心文件
+                    Vendor('AliPay.AopSdk');
+                    Vendor("AliPay.pagepay.service.AlipayTradeService");
+                    Vendor("AliPay.pagepay.buildermodel.AlipayTradePagePayContentBuilder");
+
+                    $payRequestBuilder = new \AlipayTradePagePayContentBuilder();
+                    $payRequestBuilder->setSubject($order_content);
+                    $payRequestBuilder->setTotalAmount($amount);
+                    $payRequestBuilder->setOutTradeNo($pay_sn);
+
+                    $ali_pay_config = C('ALI_PAY');
+                    $aop = new \AlipayTradeService($ali_pay_config);
+                    $response = $aop->pagePay($payRequestBuilder, $ali_pay_config['return_url'], $ali_pay_config['notify_url']);
+
+                    if ($response) {
+                        // 构建订单数据并入库
+                        $save_res = $this->add_order($recharge_id, $pay_sn, PAY_BY_ALI, $order_content, $amount);
+                        if (!$save_res) {
+                            $res = array(
+                                'result_code' => 400,
+                                'result_msg'  => '订单数据保存失败'
+                            );
+                            $this->ajaxReturn($res);
+                        }
+
+                        // 输出支付二维码
+                        var_dump($response);
+                    }
+
+                    break;
+            }
+        } catch (\Exception $e) {
+            Log::write('程序错误【'. $e->getMessage() .'】');
+            $res = array(
+                'result_code' => 400,
+                'result_msg'  => '程序错误'
+            );
+            $this->ajaxReturn($res);
+        }
+
+    }
+
+    /**
+     * 保存订单数据
+     *
+     * @param $recharge_id   // 充值套餐ID
+     * @param $pay_sn        // 支付订单号
+     * @param $order_content // 订单内容
+     * @param $amount        // 订单金额
+     *
+     * @return mixed
+     */
+    private function add_order($recharge_id, $pay_sn, $pay_type, $order_content, $amount)
+    {
+        $order_data                  = array();
+        $order_data['user_id']       = $this->user_info['id'];
+        $order_data['recharge_id']   = $recharge_id;
+        $order_data['order_sn']      = makeOrderSn($pay_sn);
+        $order_data['pay_sn']        = $pay_sn;
+        $order_data['pay_type']      = $pay_type;
+        $order_data['order_content'] = $order_content;
+        $order_data['order_amount']  = $amount;
+        $order_data['order_state']   = ORDER_STATE_NO_PAY;
+        $order_data['del_state']     = 0;
+        $order_data['add_time']      = time();
+
+        $save_res = M('Order')->add($order_data);
+        return $save_res;
+    }
+
+    /**
+     * 申请发票
+     */
+    public function add_invoice()
+    {
+        $inv_data             = I('post.');
+        $inv_data['add_time'] = time();
+
+        $add_res = M('Invoice')->add($inv_data);
+        if ($add_res) {
+            $res = array(
+                'result_code' => 200,
+                'result_msg'  => '申请成功'
+            );
+        } else {
+            $res = array(
+                'result_code' => 400,
+                'result_msg'  => '申请失败'
+            );
+        }
+
+        $this->ajaxReturn($res);
     }
 
 }

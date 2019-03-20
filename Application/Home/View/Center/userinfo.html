@@ -1,7 +1,22 @@
-<include file="Public/center_header"/>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>一刻钟</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="/Public/home/layui/css/layui.css" media="all" />
+    <link rel="stylesheet" href="/Public/admin/css/user.css" media="all" />
+    <link rel="icon" href="/Public/admin/images/favicon.ico">
+</head>
 <body>
-<div class="dingzhi">
-    <form class="grzl grinter-right" action="/home/center/userinfo_edit" method="post">
+<!--<div class="dingzhi">
+    <form class="grzl grinter-right layui-form" action="/home/center/userinfo_edit" method="post">
         <h3>基本信息</h3>
         <div class="zhanghu-box">
             <div class="dj">
@@ -11,9 +26,27 @@
                 </div>
                 <div class="zhanghuqrqx">
                     <button type="button" class="layui-btn" id="upload"><i class="layui-icon">&#xe67c;</i>上传图片</button>
-                    <!--<input class="zhanghuqx" type="file" name="headimg" value=""/>-->
+                    &lt;!&ndash;<input class="zhanghuqx" type="file" name="headimg" value=""/>&ndash;&gt;
                 </div>
                 <div class="zhanghunc">昵称<input type="text" name="c_name" placeholder=" 请输入公司名称" value=" {$userinfo.c_name}"></div>
+                <div class="layui-form-item userAddress">
+                    <label class="layui-form-label">家庭住址</label>
+                    <div class="layui-input-inline">
+                        <select name="province" lay-filter="province">
+                            <option value="">请选择省</option>
+                        </select>
+                    </div>
+                    <div class="layui-input-inline">
+                        <select name="city" lay-filter="city" disabled>
+                            <option value="">请选择市</option>
+                        </select>
+                    </div>
+                    <div class="layui-input-inline">
+                        <select name="area" lay-filter="area" disabled>
+                            <option value="">请选择县/区</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="zhanghudz">
                     <span style=" float:left;">地址</span>
                     <textarea name="c_address" id="" cols="30" rows="5">{$userinfo.c_address}</textarea>
@@ -24,16 +57,124 @@
             </div>
         </div>
     </form>
-</div>
-<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="/Public/new/js/jquery-form.js"></script>
-<script src="/Public/home/layui/layui.js"></script>
-<script src="/Public/new/js/sharp_m.js"></script>
+</div>-->
+<form class="layui-form grinter-right grzl" action="/home/center/userinfo_edit" method="post">
+    <h3>基本信息</h3>
+    <input type="hidden" name="province_name" value="{$userinfo.province_name}">
+    <input type="hidden" name="city_name" value="{$userinfo.city_name}">
+    <input type="hidden" name="area_name" value="{$userinfo.area_name}">
+
+    <input type="hidden" name="province_code" value="{$userinfo.province}">
+    <input type="hidden" name="city_code" value="{$userinfo.city}">
+    <input type="hidden" name="area_code" value="{$userinfo.area}">
+    <div class="layui-form-item">
+        <label class="layui-form-label">用户昵称</label>
+        <div class="layui-input-block">
+            <input type="text" value="{$userinfo.c_name}" name="c_name" class="layui-input" autocomplete="off">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">用户签名</label>
+        <div class="layui-input-block">
+            <input type="text" value="{$userinfo.c_slogen}" name="c_slogen" class="layui-input" placeholder=" 用一句话描述自己吧。" autocomplete="off">
+        </div>
+    </div>
+    <div class="layui-form-item userAddress">
+        <label class="layui-form-label">公司地址</label>
+        <div class="layui-input-inline">
+            <select name="province" lay-filter="province">
+                <option value="">请选择省</option>
+            </select>
+        </div>
+        <div class="layui-input-inline">
+            <select name="city" lay-filter="city" disabled>
+                <option value="">请选择市</option>
+            </select>
+        </div>
+        <div class="layui-input-inline">
+            <select name="area" lay-filter="area" disabled>
+                <option value="">请选择县/区</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">详细地址</label>
+        <div class="layui-input-block">
+            <input type="text" name="c_address" value="{$userinfo.c_address}" placeholder="请输入详细地址" lay-verify="required" class="layui-input" autocomplete="off">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">用户头像</label>
+        <input id="c_logo" type="hidden" name="c_logo" value="{$userinfo['c_logo']}">
+        <div class="layui-input-block">
+            <div class="layui-inline">
+                <button type="button" class="layui-btn" id="upload"><i class="layui-icon layui-icon-upload"></i>上传图片</button>
+            </div>
+            <div class="layui-upload-list">
+                <img width="200" height="200" class="layui-circle" id="headimg" src="/Public/home/headimg/{$userinfo['c_logo']}">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item" style="margin-left: 5%; margin-top: 50px;">
+        <div class="layui-input-block">
+            <button class="layui-btn submit">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript" src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+<script type="text/javascript" src="/Public/new/js/jquery-form.js"></script>
+<script type="text/javascript" src="/Public/home/layui/layui.js"></script>
+<script type="text/javascript" src="/Public/admin/js/address.js"></script>
+<script type="text/javascript" src="/Public/new/js/sharp_m.js"></script>
 <script>
-    layui.use(['upload', 'layer'], function () {
+
+    layui.use(['upload', 'layer', 'form'], function () {
         let $ = layui.jquery,
             upload = layui.upload,
-            layer = layui.layer;
+            layer = layui.layer,
+            form = layui.form,
+            areaData = address,
+            $form = $('form');
+
+        let province_code = $('input[name="province_code"]').val();
+        let city_code = $('input[name="city_code"]').val();
+        let area_code = $('input[name="area_code"]').val();
+
+        //加载省信息
+        loadProvince();
+
+        if(province_code && city_code && area_code) {
+            $(".userAddress select[name='province']").val(province_code); //省
+            var citys;
+            var value = province_code;
+            var d = value.split('_');
+            var code = d[0];
+            var count = d[1];
+            var index = d[2];
+            if (count > 0) {
+                loadCity(areaData[index].mallCityList);
+                citys = areaData[index].mallCityList
+            } else {
+                $form.find('select[name=city]').attr("disabled","disabled");
+            }
+            $(".userAddress select[name='city']").val(city_code); //市
+            //填充市级信息，同时调取区县信息列表
+            var value = city_code;
+            var d = value.split('_');
+            var code = d[0];
+            var count = d[1];
+            var index = d[2];
+            if (count > 0) {
+                loadArea(citys[index].mallAreaList);
+            } else {
+                $form.find('select[name=area]').attr("disabled","disabled");
+            }
+            $(".userAddress select[name='area']").val(area_code); //区
+            form.render();
+        }
+
 
         $(function () {
             $(".chongzhibox").click(function () {
@@ -73,7 +214,7 @@
         });
 
         // 提交表单
-        $("input[type='submit']").click(function () {
+        $(".submit").click(function () {
             $(".grzl").ajaxSubmit(function (res) {
                 if(res) {
                     layer.msg(res.result_msg);
@@ -87,6 +228,72 @@
             });
             return false;
         });
+
+        //加载省数据
+        function loadProvince() {
+            var proHtml = '';
+            for (var i = 0; i < areaData.length; i++) {
+                proHtml += '<option value="' + areaData[i].provinceCode + '_' + areaData[i].mallCityList.length + '_' + i + '">' + areaData[i].provinceName + '</option>';
+            }
+            //初始化省数据
+            $form.find('select[name=province]').append(proHtml);
+            form.render();
+            form.on('select(province)', function(data) {
+                $form.find('select[name=area]').html('<option value="">请选择县/区</option>');
+                var value = data.value;
+                var d = value.split('_');
+                var code = d[0];
+                var count = d[1];
+                var index = d[2];
+                if (count > 0) {
+                    loadCity(areaData[index].mallCityList);
+                } else {
+                    $form.find('select[name=city]').attr("disabled","disabled");
+                }
+                let province_name = areaData[index].provinceName;
+                $('input[name="province_name"]').val(province_name);
+            });
+        }
+        //加载市数据
+        function loadCity(citys) {
+            var cityHtml = '<option value="">请选择市</option>';
+            for (var i = 0; i < citys.length; i++) {
+                cityHtml += '<option value="' + citys[i].cityCode + '_' + citys[i].mallAreaList.length + '_' + i + '">' + citys[i].cityName + '</option>';
+            }
+            $form.find('select[name=city]').html(cityHtml).removeAttr("disabled");
+            form.render();
+            form.on('select(city)', function(data) {
+                var value = data.value;
+                var d = value.split('_');
+                var code = d[0];
+                var count = d[1];
+                var index = d[2];
+                if (count > 0) {
+                    loadArea(citys[index].mallAreaList);
+                } else {
+                    $form.find('select[name=area]').attr("disabled","disabled");
+                }
+                let city_name = citys[index].cityName;
+                $('input[name="city_name"]').val(city_name);
+            });
+        }
+        //加载县/区数据
+        function loadArea(areas) {
+            var areaHtml = '<option value="">请选择县/区</option>';
+            for (var i = 0; i < areas.length; i++) {
+                areaHtml += '<option value="' + areas[i].areaCode + '">' + areas[i].areaName + '</option>';
+            }
+            $form.find('select[name=area]').html(areaHtml).removeAttr("disabled");
+            form.render();
+            form.on('select(area)', function(data) {
+                let value = data.value;
+                for (let index in areas) {
+                    if(areas[index].areaCode === value) {
+                        $('input[name="area_name"]').val(areas[index].areaName);
+                    }
+                }
+            });
+        }
     });
 </script>
 

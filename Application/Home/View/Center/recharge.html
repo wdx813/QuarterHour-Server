@@ -5,7 +5,7 @@
     <p>1、请选择充值类型</p>
     <div class="chongzhi">
         <foreach name="recharge_list" item="recharge">
-            <div class="chongzhibox">
+            <div class="chongzhibox" id="{$recharge.id}">
                 <img src="/Public/home/images/cz.png" alt="">
                 <h3><span>{$recharge.price}</span>元</h3>
                 <p>{$recharge.expire_date}</p>
@@ -35,25 +35,20 @@
             <table class="order_table">
                 <tr>
                     <th>订单内容</th>
-                    <th>金额</th>
+                    <th>金额（元）</th>
                     <th>优惠</th>
                     <th>订单创建日期</th>
                     <th>操作</th>
                 </tr>
-                <tr>
-                    <td>720yun商业账户开通-12个月</td>
-                    <td>金额：2680</td>
-                    <td>无</td>
-                    <td>2018.10.17</td>
-                    <td><a href="#" class="fp_btn">发票信息</a></td>
-                </tr>
-                <tr>
-                    <td>720yun商业账户开通-12个月</td>
-                    <td>金额：2680</td>
-                    <td>无</td>
-                    <td>2018.10.17</td>
-                    <td><a href="#" class="fp_btn">发票信息</a></td>
-                </tr>
+                <foreach name="order_list" item="order">
+                    <tr>
+                        <td>{$order.order_content}</td>
+                        <td class="order_amount">{$order.order_amount}</td>
+                        <td>无</td>
+                        <td>{$order.add_time}</td>
+                        <td><a id="{$order.id}" href="#" class="fp_btn">申请发票</a></td>
+                    </tr>
+                </foreach>
             </table>
         </div>
     </div>
@@ -63,6 +58,7 @@
 <script>
     let obj_amount = $('.chongzhi .h5 span');
     let amount = 0,  //订单总金额
+        recharge_id = 0, // 产品ID
         expire_date = ''; //产品有效期
 
     // 选择产品套餐
@@ -77,6 +73,7 @@
         let price = $(this).find('span').text();
         obj_amount.text(price);
         amount = price;
+        recharge_id = $(this).attr('id');
         expire_date = $(this).find('p').text();
     });
 
@@ -87,8 +84,13 @@
         $(this).siblings().css("border-color", "#ccc");
         $(this).siblings().css("box-shadow", "2px 2px 10px rgba(0,0,0,0)");
 
+        let that = this;
         if(amount === 0) {
-            parent.layer.alert('请选择充值套餐', {icon: 0, title: '提示'});
+            parent.layer.alert('请选择充值套餐', {icon: 0, title: '提示'}, function (index) {
+                $(that).css("border-color", "#cccd");
+                $(that).css("box-shadow", "2px 2px 10px rgba(0,0,0,0)");
+                parent.layer.close(index);
+            });
             return false;
         }
 
@@ -99,23 +101,39 @@
             return false;
         }
 
-        let pay_type = $(this).index();
+        let pay_type = $(this).index() + 1;
         parent.layer.confirm('您确定要下单吗？', {icon: 3, title: '提示'}, function (index) {
-
             console.log(pay_type);
             console.log(expire_date);
-            let data = {pay_type: pay_type, expire_date: expire_date};
-            $.post('/home/center/create_order', data, function (res) {
+            let title = '请使用手机微信扫码支付';
+            if(pay_type === 2) {
+                title = '请使用手机支付宝扫码支付';
+            }
 
-            });
             parent.layer.open({
                 type: 2,
-                content: '/home/center/create_order'
+                title: title,
+                content: '/home/center/create_order?pay_type=' + pay_type + '&expire_date=' + expire_date + '&amount=' + amount + '&recharge_id=' + recharge_id,
+                area: ['300px', '320px'],
+                resize: false,  // 禁止弹框拉伸
+                scrollbar: false
             });
 
             parent.layer.close(index);
         })
     });
+
+    // 开发票
+    $(".fp_btn").click(function () {
+        let order_amount = $(this).parent().siblings('.order_amount').text();
+        let order_id = $(this).attr('id');
+        parent.$('.amount').html(order_amount);
+        parent.$('input[name="inv_amount"]').val(order_amount);
+        parent.$('input[name="order_id"]').val(order_id);
+        parent.$('.xiugai-bg').fadeIn();
+        return false;
+    });
+
 
 </script>
 

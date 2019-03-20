@@ -54,8 +54,8 @@
 					data: data.field,
 					dataType: 'JSON',
 					success: function (res) {
-						console.log('登录成功', res);
 						if(res.result_code == 400) {
+						    $('input[name="code"]').val("");
 						    layer.msg(res.result_msg);
 						    // 刷新验证码
                             $("#imgCode").attr("src", "/admin/login/verify_create");

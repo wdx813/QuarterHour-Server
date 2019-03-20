@@ -41,7 +41,7 @@
             <div class="box">
                 <p class="dataf" data-f="/home/center/collect_show"><span class="span1"></span>我的收藏</p>
                 <p class="dataf" data-f="center/account"><span class="span2"></span>账户安全</p>
-                <!--<p class="dataf" data-f="/home/center/recharge"><span class="span3"></span>充值入口</p>-->
+                <p class="dataf" data-f="/home/center/recharge"><span class="span3"></span>充值入口</p>
                 <p class="dataf" data-f="center/exchange"><span class="span4"></span>会员兑换</p>
                 <p class="dataf" data-f="/home/center/notice_show"><span class="span5"></span>通知中心</p>
             </div>
@@ -51,8 +51,6 @@
             <iframe class="s_iframe" id="iframepage" src="/home/center/collect_show" frameborder="0" scrolling="no"
                     frameborder="0" onload="this.height=1150"></iframe>
         </div>
-
-
     </div>
     <div class="index-footer">
         <p>
@@ -71,105 +69,107 @@
     <div class="xiugai-fp">
         <p class="title">发票信息<span class="close">X</span></p>
         <div class="form_con">
-            <form action="">
+            <form action="/home/center/add_invoice" method="post">
+                <input type="hidden" name="inv_amount" value="">
+                <input type="hidden" name="order_id" value="">
+
                 <div class="monery">
                     <span>发票金额： </span>
-                    <span style="color:red;"> 2999</span>
-                    <label class="dian on"><input type="radio" data-tar="1" name="fp_type" checked="1"></label>
+                    <span style="color:red;" class="amount"></span>
+                    <label class="dian on"><input type="radio" data-tar="1" name="inv_type" checked="1" value="1"></label>
                     <span> 增值税普通发票（电子版）</span>
-                    <label class="dian"><input type="radio" data-tar="2" name="fp_type"></label>
+                    <label class="dian"><input type="radio" data-tar="2" name="inv_type" value="2"></label>
                     <span> 增值税普通发票</span>
-                    <label class="dian"><input type="radio" data-tar="3" name="fp_type"></label>
+                    <label class="dian"><input type="radio" data-tar="3" name="inv_type" value="3"></label>
                     <span> 增值税专业发票</span>
                 </div>
 
                 <p class="bitian">发票信息（必填）</p>
                 <div class="content">
                     <div>
-                        <span style="">发票名称： <input type="text"></span>
-                        <span>纳税人识别号： <input type="text"></span>
+                        <span style="">发票名称： <input type="text" name="inv_title" autocomplete="off"></span>
+                        <span>纳税人识别号： <input type="text" name="inv_code" autocomplete="off"></span>
                     </div>
                     <div>
-                        <span>电子邮箱： <input type="text"></span>
-                        <span>联系电话： <input style="margin-left:25px;" type="text"></span>
+                        <span>电子邮箱： <input type="text" name="inv_rec_email" autocomplete="off"></span>
+                        <span>联系电话： <input style="margin-left:25px;" type="text" name="inv_rec_phone" autocomplete="off"></span>
                     </div>
-
                 </div>
                 <p class="beizhu">备注：发票以图片的形式发送到你指定的电子邮箱中，打印后正常使用，省略邮寄时间</p>
                 <input type="submit" value="提交" class="sub">
             </form>
 
-            <form action="">
+            <form action="/home/center/add_invoice" method="post">
+                <input type="hidden" name="inv_amount" value="">
+                <input type="hidden" name="order_id" value="">
                 <div class="monery">
                     <span>发票金额： </span>
-                    <span style="color:red;"> 2999</span>
-                    <label class="dian"><input type="radio" data-tar="1" name="fp_type" checked="1"></label>
+                    <span style="color:red;" class="amount"></span>
+                    <label class="dian"><input type="radio" data-tar="1" name="inv_type" value="1"></label>
                     <span> 增值税普通发票（电子版）</span>
-                    <label class="dian on"><input type="radio" data-tar="2" name="fp_type" checked="1"></label>
+                    <label class="dian on"><input type="radio" data-tar="2" name="inv_type" checked="1" value="2"></label>
                     <span> 增值税普通发票</span>
-                    <label class="dian"><input type="radio" data-tar="3" name="fp_type"></label>
+                    <label class="dian"><input type="radio" data-tar="3" name="inv_type" value="3"></label>
                     <span> 增值税专业发票</span>
                 </div>
                 <p class="bitian">发票信息（必填）</p>
                 <div class="content">
                     <div>
-                        <span style="">发票名称： <input type="text"></span>
-                        <span>纳税人识别号： <input type="text"></span>
+                        <span style="">发票名称： <input type="text" name="inv_title" autocomplete="off"></span>
+                        <span>纳税人识别号： <input type="text" name="inv_code" autocomplete="off"></span>
                     </div>
-
-
                 </div>
-
                 <p class="bitian">发票邮寄信息（必填）</p>
                 <div class="content">
                     <div>
-                        <span style="">收件地址： <input style="width:685px;" type="text"></span>
-
+                        <span style="">收件地址： <input style="width:685px;" type="text" name="inv_rec_address" autocomplete="off"></span>
                     </div>
                     <div>
-                        <span>电子邮箱： <input type="text"></span>
-                        <span>联系电话： <input style="margin-left:25px;" type="text"></span>
+                        <span>电子邮箱： <input type="text" name="inv_rec_email" autocomplete="off"></span>
+                        <span>联系电话： <input style="margin-left:25px;" type="text" name="inv_rec_phone" autocomplete="off"></span>
                     </div>
                 </div>
                 <p class="beizhu" style=" padding-bottom:100px;">备注：提交信息后，我们会在7个工作日之内邮寄出发票</p>
                 <input type="submit" value="提交" class="sub">
             </form>
 
-            <form action="">
+            <form action="/home/center/add_invoice" method="post">
+                <input type="hidden" name="inv_amount" value="">
+                <input type="hidden" name="order_id" value="">
                 <div class="monery">
                     <span>发票金额： </span>
-                    <span style="color:red;"> 2999</span>
-                    <label class="dian"><input type="radio" data-tar="1" name="fp_type"></label>
+                    <span style="color:red;" class="amount"></span>
+                    <label class="dian"><input type="radio" data-tar="1" name="inv_type" value="1"></label>
                     <span> 增值税普通发票（电子版）</span>
-                    <label class="dian"><input type="radio" data-tar="2" name="fp_type"></label>
+                    <label class="dian"><input type="radio" data-tar="2" name="inv_type" value="2"></label>
                     <span> 增值税普通发票</span>
-                    <label class="dian on"><input type="radio" data-tar="3" name="fp_type" checked="1"></label>
+                    <label class="dian on"><input type="radio" data-tar="3" name="inv_type" value="3" checked="1"></label>
                     <span> 增值税专业发票</span>
                 </div>
                 <p class="bitian">发票信息（必填）</p>
                 <div class="content">
                     <div>
-                        <span style="">公司名称： <input type="text"></span>
-                        <span>纳税人识别号： <input type="text"></span>
+                        <span style="">公司名称： <input type="text" name="inv_com_name" autocomplete="off"></span>
+                        <span>纳税人识别号： <input type="text" name="inv_code" autocomplete="off"></span>
                     </div>
                     <div>
-                        <span style="">公司地址： <input type="text"></span>
-                        <span>公司电话： <input style=" margin-left:25px; type=" text"></span>
+                        <span style="">公司地址： <input type="text" name="inv_com_address" autocomplete="off"></span>
+                        <span>公司电话： <input style=" margin-left:25px; type=" type="text" name="inv_com_phone" autocomplete="off"></span>
                     </div>
                     <div>
-                        <span style="">开户行： <input style=" margin-left:12px; type=" text"></span>
-                        <span>公司账户： <input style=" margin-left:25px;" type="text"></span>
+                        <span style="">开户行： <input style=" margin-left:12px; type=" type="text" name="inv_com_bank" autocomplete="off"></span>
+                        <span>公司账户： <input style=" margin-left:25px;" type="text" name="inv_com_account" autocomplete="off"></span>
                     </div>
                 </div>
                 <p class="bitian">发票邮寄信息（必填）</p>
                 <div class="content">
                     <div>
-                        <span style="">收件地址： <input style="width:685px;" type="text"></span>
+                        <span style="">收件地址： <input style="width:685px;" type="text" name="inv_rec_address"></span>
 
                     </div>
                     <div>
-                        <span>电子邮箱： <input type="text"></span>
-                        <span>联系电话： <input style="margin-left:25px;" type="text"></span>
+                        <span>电子邮箱： <input type="text" name="inv_rec_email"></span>
+                        <span>联系电话： <input style="margin-left:25px;" type="text" name="inv_rec_phone"></span>
                     </div>
                 </div>
                 <p class="beizhu" style=" padding-bottom:0;">备注：提交信息后，我们会在7个工作日之内邮寄出发票</p>
@@ -280,10 +280,7 @@
     window.setInterval("reinitIframe()", 200);
     $(function () {
         $("#iframepage").load(function () {
-            $(this).contents().find(".fp_btn").click(function () {
-                $('.xiugai-bg').fadeIn();
-                return false;
-            });
+
             $(this).contents().find("#yzm_mm").click(function () {
                 $('.yzm_mm').fadeIn();
                 maskon();
@@ -300,6 +297,8 @@
 
     $('.xiugai-bg .close').click(function () {
         $('.xiugai-bg').fadeOut();
+        // 输入框置为空
+        $(":input").val("");
     });
 
 
@@ -383,6 +382,7 @@
                 layer.msg("服务器错误，请稍后重试~", {time:1500});
             }
         });
+        return false;
     });
 
     // 重置手机号--校验
@@ -440,7 +440,24 @@
             } else {
                 layer.msg("服务器错误，请稍后重试~", {time:1500});
             }
-        })
+        });
+        return false;
+    });
+
+    // 提交发票申请
+    $('.sub').click(function () {
+        let form = $(this).parent();
+        form.ajaxSubmit(function (res) {
+            if(res) {
+                if(res.result_code == 200) {
+                    $('.xiugai-bg .close').click();
+                }
+                layer.msg(res.result_msg);
+            } else {
+                layer.msg("服务器错误，请稍后重试~");
+            }
+        });
+        return false;
     });
 </script>
 

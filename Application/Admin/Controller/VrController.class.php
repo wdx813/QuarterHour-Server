@@ -28,7 +28,12 @@ class VrController extends BaseController
         }
 
         $model_vr = M('Vr');
-        $vr_list  = $model_vr->field('t_vr.*, t_vr_type.type_name')->join('t_vr_type on t_vr.type_id = t_vr_type.id')->where($condition)->page($page, $limit)->select();
+        if($keyword) {
+            $vr_list  = $model_vr->field('t_vr.*, t_vr_type.type_name')->join('t_vr_type on t_vr.type_id = t_vr_type.id')->where($condition)->select();
+        } else {
+            $vr_list  = $model_vr->field('t_vr.*, t_vr_type.type_name')->join('t_vr_type on t_vr.type_id = t_vr_type.id')->where($condition)->order('id desc')->page($page, $limit)->select();
+        }
+
         if($vr_list && !empty($vr_list)) {
             foreach ($vr_list as &$vr) {
                 $vr['add_time'] = date('Y-m-d h:i:s', $vr['add_time']);
@@ -53,6 +58,7 @@ class VrController extends BaseController
     {
         $params = I('post.');
         if($params) {
+            $params['add_time'] = time();
             $add_res = M('Vr')->add($params);
             if($add_res) {
                 $res = array(
