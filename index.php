@@ -22,7 +22,7 @@ define('BASE_PATH',str_replace('\\','/',realpath(dirname(__FILE__).'/'))."/");
 define('APP_PATH','./Application/');
 
 // 定义配置文件
-define('APP_STATUS', 'config');
+define('APP_STATUS', 'config_dev');
 
 // 定义绑定模块
 //define('BIND_MODULE', 'Admin');
