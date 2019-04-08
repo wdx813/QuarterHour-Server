@@ -62,5 +62,9 @@ return array(
         'gatewayUrl'           => "https://openapi.alipay.com/gateway.do",
         //支付宝公钥,查看地址：https://openhome.alipay.com/platform/keyManage.htm 对应APPID下的支付宝公钥。
         'alipay_public_key'    => "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtydyc7jkdq/C1AyfKYGKWyfUhRIm28TA86ZaCxgXnBTBgHQqzVq+CrATz3gNEkxQBdGobispZbbeBvGXDQIUuvEePv+KHOIdBzXswNVMyVu0tSYbvMFDMmt1ItqmUpOONemrFKTLrms8pvPH2dq6VLoxSibWXYwRvDPzSdSlVIwuO7S8M7GP3hOSjCP1ZUB+DkMkMX3PTTBF8e3wotCI3Tka/U04Q785AO2OnRiXdXUqdW6HMGiSdYgDn204pw3FJj0WMEyGRqkmhYPTYmlkel3HjpTq5CRCklpQVywFeGNHouNg2Wr8EQ5IcMyfQ/+DRzVxzIfw8JaIKEsdCyhWJwIDAQAB",
-    )
+    ),
+
+    /* 礼到商城的链接 */
+    'LI_DAO_SHOP_URL' => 'http://www.juzi-it.com' // http://www.lidaoshop.com
+
 );
